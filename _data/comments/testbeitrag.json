@@ -1,5 +1,24 @@
 {
   "discussion_number": 1,
   "discussion_url": "https://github.com/BlackScorp/blackscorp.github.io/discussions/1",
-  "comments": []
+  "comments": [
+    {
+      "id": "DC_kwDOEtjoKc4BIkDb",
+      "author": "BlackScorp",
+      "initials": "BL",
+      "is_author": true,
+      "date": "2026-10-18T18:37:27Z",
+      "body": "erstes kommentar",
+      "replies": [
+        {
+          "id": "DC_kwDOEtjoKc4BIkDe",
+          "author": "BlackScorp",
+          "initials": "BL",
+          "is_author": true,
+          "date": "2026-10-18T18:37:34Z",
+          "body": "und ein reply"
+        }
+      ]
+    }
+  ]
 }
