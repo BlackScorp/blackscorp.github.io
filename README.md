@@ -38,7 +38,7 @@ Der Testbeitrag unter <http://localhost:4000/blog/2026/10/18/testbeitrag/> verkn
 
 GitHub Pages muss in den Repository-Einstellungen als Quelle **GitHub Actions** verwenden. Der Workflow verwendet ausschließlich das automatisch bereitgestellte `GITHUB_TOKEN` mit `discussions: read`, `contents: write`, `pages: write` und `id-token: write`. Zusätzliche Secrets sind nicht erforderlich. Branch-Schutzregeln müssen automatische Kommentar-Commits auf `master` zulassen.
 
-`_layouts/post.html` und `_includes/comment.html` zeigen Kommentare und Antworten als HTML-escaped Klartext mit lokalen Initialen an. Der Zähler umfasst Kommentare und Antworten. GitHub-Anmeldung ist nur zum Schreiben auf GitHub erforderlich; die Blogseite lädt keine GitHub-Skripte oder Avatare.
+`_layouts/post.html` und `_includes/comment.html` zeigen Kommentare und Antworten als HTML-escaped Klartext mit Profilbildern an. Die Synchronisierung übernimmt nur die öffentliche GitHub-Avatar-URL; der Browser lädt das Profilbild direkt von GitHub. Bilddateien werden weder gespeichert noch committet. Initialen dienen als Fallback für Accounts ohne Profilbild. Der Zähler umfasst Kommentare und Antworten. GitHub-Anmeldung ist nur zum Schreiben auf GitHub erforderlich; die Blogseite lädt keine GitHub-Skripte. Der Discussion-Link öffnet einen neuen Tab.
 
 Synchronisierung testen:
 

@@ -53,7 +53,7 @@ layout: default
             <span class="comments-demo-action">Auf GitHub kommentieren <span aria-hidden="true">↗</span></span>
             <p>Hier führt später ein Link zur GitHub Discussion dieses Beitrags.</p>
           {% elsif discussion.discussion_url %}
-            <a class="primary-link" href="{{ discussion.discussion_url | escape }}">Auf GitHub kommentieren <span aria-hidden="true">↗</span></a>
+            <a class="primary-link" href="{{ discussion.discussion_url | escape }}" target="_blank" rel="noopener noreferrer" aria-label="Auf GitHub kommentieren (öffnet in neuem Tab)">Auf GitHub kommentieren <span aria-hidden="true">↗</span></a>
           {% endif %}
         </footer>
       </section>

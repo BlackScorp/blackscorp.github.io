@@ -13,6 +13,7 @@ test('syncs paginated comments and replies, edits, deletions and deleted account
   const filepath = path.join(commentsDirectory, 'test.json');
   fs.writeFileSync(filepath, JSON.stringify({ discussion_number: 1, comments: [{ id: 'old' }] }));
   const comment = { id: 'comment-1', author: { login: 'BlackScorp' }, body: '<script>test</script>\nNeue Zeile', createdAt: '2026-10-18T12:00:00Z' };
+  comment.author.avatarUrl = 'https://avatars.githubusercontent.com/u/1';
   let deleted = false;
   const cursors = [];
   const page = (nodes, next = null) => ({ nodes, pageInfo: { hasNextPage: Boolean(next), endCursor: next } });
@@ -34,6 +35,11 @@ test('syncs paginated comments and replies, edits, deletions and deleted account
     assert.equal(data.comments[0].replies.length, 2);
     assert.equal(data.comments[0].body, comment.body);
     assert.equal(data.comments[0].is_author, true);
+    assert.equal(data.comments[0].avatar, comment.author.avatarUrl);
+    assert.equal(data.comments[0].replies[0].avatar, data.comments[0].avatar);
+    assert.equal(data.comments[1].avatar, null);
+    assert.equal(data.comments[0].replies[1].avatar, null);
+    assert.equal(fs.existsSync(path.join(directory, 'assets')), false);
     assert.equal(data.comments[1].author, 'Gelöschter Account');
     assert.equal(data.comments[1].is_author, false);
     assert.ok(cursors.includes('next-comment'));

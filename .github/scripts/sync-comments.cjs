@@ -18,6 +18,7 @@ function serializeComment(comment, owner) {
     id: comment.id,
     author,
     initials: Array.from(author).slice(0, 2).join('').toUpperCase(),
+    avatar: comment.author?.avatarUrl || null,
     is_author: author.toLowerCase() === owner.toLowerCase(),
     date: comment.createdAt,
     body: comment.body,
@@ -47,7 +48,7 @@ module.exports = async ({ github, context }) => {
           node(id: $id) {
             ... on Discussion {
               comments(first: 100, after: $cursor) {
-                nodes { id body createdAt author { login } }
+                nodes { id body createdAt author { login avatarUrl(size: 72) } }
                 pageInfo { hasNextPage endCursor }
               }
             }
@@ -64,7 +65,7 @@ module.exports = async ({ github, context }) => {
             node(id: $id) {
               ... on DiscussionComment {
                 replies(first: 100, after: $cursor) {
-                  nodes { id body createdAt author { login } }
+                  nodes { id body createdAt author { login avatarUrl(size: 72) } }
                   pageInfo { hasNextPage endCursor }
                 }
               }

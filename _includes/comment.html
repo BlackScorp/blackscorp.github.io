@@ -1,5 +1,5 @@
 <article class="comment" id="comment-{{ include.comment.id | escape }}" aria-label="Kommentar von {{ include.comment.author | escape }}">
-  <div class="comment-avatar" aria-hidden="true">{{ include.comment.initials | escape }}</div>
+  <div class="comment-avatar" aria-hidden="true">{% if include.comment.avatar %}<img src="{{ include.comment.avatar | escape }}" alt="" width="36" height="36" loading="lazy" referrerpolicy="no-referrer">{% else %}{{ include.comment.initials | escape }}{% endif %}</div>
   <div class="comment-content">
     <header class="comment-meta">
       <strong>{{ include.comment.author | escape }}</strong>
