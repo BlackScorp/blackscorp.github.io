@@ -1,0 +1,11 @@
+---
+layout: default
+---
+<div class="page-content{% if page.cv %} cv-content{% endif %}">
+  <header class="page-heading">
+    <p class="eyebrow">{{ page.kicker | default: page.url }}</p>
+    <h1>{{ page.title | escape }}</h1>
+    {% if page.lead %}<p class="lead">{{ page.lead | escape }}</p>{% endif %}
+  </header>
+  <div class="prose">{{ content }}</div>
+</div>

@@ -1,0 +1,22 @@
+---
+layout: default
+---
+<section class="blog-page">
+  <header class="page-heading">
+    <p class="eyebrow">Notizen</p>
+    <h1>Blog</h1>
+    <p class="lead">Notizen zu Code und Webentwicklung.</p>
+  </header>
+  <div class="blog-list">
+    {% for post in site.posts %}
+    <article class="blog-entry">
+      {% if post.image %}<a class="blog-entry-image" href="{{ post.url | relative_url }}" aria-label="{{ post.title | escape }}"><img src="{{ post.image | relative_url }}" alt="" loading="lazy"></a>{% endif %}
+      <div class="blog-entry-content">
+        <p class="blog-entry-meta"><time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: '%d.%m.%Y' }}</time>{% if post.sample %}<span>Beispiel</span>{% endif %}</p>
+        <h2><a href="{{ post.url | relative_url }}">{{ post.title | escape }} <span aria-hidden="true">↗</span></a></h2>
+        <p>{{ post.summary | default: post.excerpt | strip_html | truncate: 130 }}</p>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>

@@ -1,0 +1,53 @@
+name: Kommentare synchronisieren und Website veröffentlichen
+
+on:
+  push:
+    branches: [master]
+  discussion_comment:
+    types: [created, edited, deleted]
+  workflow_dispatch:
+  schedule:
+    - cron: '17 * * * *'
+
+permissions:
+  contents: write
+  discussions: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: website-publication
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+      - name: Kommentare und Antworten laden
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await require('./.github/scripts/sync-comments.cjs')({ github, context });
+      - name: Geänderte Kommentare speichern
+        shell: bash
+        run: |
+          git add _data/comments/*.json
+          if ! git diff --cached --quiet; then
+            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Update blog comments and replies from GitHub Discussions'
+            git push origin HEAD:master
+          fi
+      - uses: actions/configure-pages@v5
+      - uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
+      - uses: actions/upload-pages-artifact@v3
+      - name: Website veröffentlichen
+        id: deployment
+        uses: actions/deploy-pages@v4

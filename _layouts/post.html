@@ -1,0 +1,62 @@
+---
+layout: default
+---
+<article class="page-content post-content">
+  <a class="back-link" href="{{ '/blog/' | relative_url }}">← Alle Beiträge</a>
+  <header class="page-heading">
+    <p class="eyebrow">/blog/{{ page.date | date: '%Y' }}</p>
+    <h1>{{ page.title | escape }}</h1>
+    <p class="post-meta"><time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: '%d.%m.%Y' }}</time>{% if page.categories.size > 0 %} · {{ page.categories | join: ', ' }}{% endif %}{% if page.sample %} · Beispielbeitrag{% endif %}</p>
+  </header>
+  {% if page.image %}<img class="post-hero-image" src="{{ page.image | relative_url }}" alt="{{ page.image_alt | escape }}">{% endif %}
+  <div class="prose">{{ content }}</div>
+  {% if page.comments_key %}
+    {% assign discussion = site.data.comments[page.comments_key] %}
+    {% if discussion %}
+      {% assign comment_count = discussion.comments.size %}
+      {% for comment in discussion.comments %}
+        {% assign comment_count = comment_count | plus: comment.replies.size %}
+      {% endfor %}
+      <section class="post-comments" aria-labelledby="comments-heading">
+        <header class="comments-heading">
+          <div>
+            <p class="eyebrow">Austausch zum Beitrag</p>
+            <h2 id="comments-heading">Kommentare <span class="comments-count">{{ comment_count }}</span></h2>
+          </div>
+          {% if discussion.demo %}<span class="comments-demo-label">Layout-Vorschau</span>{% endif %}
+        </header>
+        {% if discussion.demo %}
+          <p class="comments-notice">Fiktive Beispielkommentare zu diesem Beitrag. Die GitHub-Verknüpfung und automatische Synchronisierung sind noch nicht aktiv.</p>
+        {% else %}
+          <p class="comments-notice">Die Diskussion findet auf GitHub statt. Du brauchst dort einen Account. Neue Kommentare erscheinen hier nach der nächsten Aktualisierung.</p>
+        {% endif %}
+        {% if discussion.comments.size > 0 %}
+          <ol class="comment-threads">
+            {% for comment in discussion.comments %}
+              <li class="comment-thread">
+                {% include comment.html comment=comment %}
+                {% if comment.replies.size > 0 %}
+                  <ol class="comment-replies" aria-label="Antworten auf den Kommentar von {{ comment.author | escape }}">
+                    {% for reply in comment.replies %}
+                      <li>{% include comment.html comment=reply %}</li>
+                    {% endfor %}
+                  </ol>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ol>
+        {% else %}
+          <p class="comments-notice">Noch keine Kommentare. Mach den Anfang!</p>
+        {% endif %}
+        <footer class="comments-footer">
+          {% if discussion.demo %}
+            <span class="comments-demo-action">Auf GitHub kommentieren <span aria-hidden="true">↗</span></span>
+            <p>Hier führt später ein Link zur GitHub Discussion dieses Beitrags.</p>
+          {% elsif discussion.discussion_url %}
+            <a class="primary-link" href="{{ discussion.discussion_url | escape }}">Auf GitHub kommentieren <span aria-hidden="true">↗</span></a>
+          {% endif %}
+        </footer>
+      </section>
+    {% endif %}
+  {% endif %}
+</article>

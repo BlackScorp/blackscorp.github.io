@@ -1,0 +1,12 @@
+---
+layout: default
+---
+<article class="page-content post-content">
+  <a class="back-link" href="{{ '/projects/' | relative_url }}">← Alle Projekte</a>
+  <header class="page-heading">
+    <p class="eyebrow">{{ page.category | default: 'Projekt' | escape }}</p>
+    <h1>{{ page.title | escape }}</h1>
+    {% if page.lead %}<p class="lead">{{ page.lead | escape }}</p>{% endif %}
+  </header>
+  <div class="prose">{{ content }}</div>
+</article>

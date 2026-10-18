@@ -1,0 +1,12 @@
+<article class="comment" id="comment-{{ include.comment.id | escape }}" aria-label="Kommentar von {{ include.comment.author | escape }}">
+  <div class="comment-avatar" aria-hidden="true">{{ include.comment.initials | escape }}</div>
+  <div class="comment-content">
+    <header class="comment-meta">
+      <strong>{{ include.comment.author | escape }}</strong>
+      {% if include.comment.is_author %}<span class="comment-author-label">Autor</span>{% endif %}
+      <time datetime="{{ include.comment.date | date_to_xmlschema }}">{{ include.comment.date | date: '%d.%m.%Y, %H:%M' }}</time>
+      <a class="comment-permalink" href="#comment-{{ include.comment.id | escape }}" aria-label="Direktlink zum Kommentar von {{ include.comment.author | escape }}">#</a>
+    </header>
+    <p class="comment-body">{{ include.comment.body | escape | newline_to_br }}</p>
+  </div>
+</article>

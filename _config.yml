@@ -1,0 +1,29 @@
+title: Vitalij Mik
+description: Persönliche Webseite und Blog
+profile_image: ""
+contact_email: "vitalij.mik@proton.me"
+social:
+  github: "https://github.com/BlackScorp"
+  linkedin: "https://www.linkedin.com/in/vitalij-mik-153895a2/"
+  youtube: "https://www.youtube.com/vitalijmik"
+lang: de
+url: "https://blackscorp.github.io"
+repository: BlackScorp/blackscorp.github.io
+baseurl: ""
+markdown: kramdown
+permalink: /blog/:year/:month/:day/:title/
+include:
+  - _pages
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+exclude:
+  - Dockerfile
+  - compose.yaml
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - AGENTS.md

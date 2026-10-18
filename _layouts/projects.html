@@ -1,0 +1,23 @@
+---
+layout: default
+---
+<section class="blog-page">
+  <header class="page-heading">
+    <p class="eyebrow">Arbeiten</p>
+    <h1>{{ page.title | escape }}</h1>
+    {% if page.lead %}<p class="lead">{{ page.lead | escape }}</p>{% endif %}
+  </header>
+  {% assign projects = site.pages | where: 'project', true | sort: 'project_order' %}
+  <div class="blog-list">
+    {% for project in projects %}
+    <article class="blog-entry">
+      {% if project.image %}<a class="blog-entry-image" href="{{ project.url | relative_url }}" aria-label="{{ project.title | escape }} ansehen"><img src="{{ project.image | relative_url }}" alt="" loading="lazy"></a>{% endif %}
+      <div class="blog-entry-content">
+        <p class="blog-entry-meta"><span>{{ project.category | default: 'Projekt' | escape }}</span></p>
+        <h2><a href="{{ project.url | relative_url }}">{{ project.title | escape }} <span aria-hidden="true">↗</span></a></h2>
+        <p>{{ project.summary | escape }}</p>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
