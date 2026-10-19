@@ -42,7 +42,7 @@ jobs:
       - name: commit
         shell: bash
         run: |
-          git add _data/comments/*.json
+          git add -- _data/comments
           if ! git diff --cached --quiet; then
             git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Update blog comments and replies from GitHub Discussions'
             git push origin HEAD:master
