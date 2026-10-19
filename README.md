@@ -17,6 +17,7 @@ Neue Blogbeiträge kommen als Markdown-Dateien nach `_posts/`, zum Beispiel `_po
 ```markdown
 ---
 title: Mein erster Beitrag
+published: false
 ---
 
 Hier beginnt der Beitrag.
@@ -30,11 +31,25 @@ Für ein eigenes Foto die Datei beispielsweise als `assets/images/profile.jpg` a
 
 Aktuell enthält `_posts/` ausschließlich den Testbeitrag für Kommentare und Antworten. Die ungenutzten Bilder in `assets/images/blog/` stammen aus der Layout-Demo.
 
+## Tags und Feeds
+
+Tags im Front Matter eines Beitrags als Liste ergänzen, zum Beispiel `tags: [php, jekyll]`. Tag-Namen dürfen für die automatische Feed-Erzeugung ausschließlich die Zeichen `a-z`, `A-Z`, `0-9` und `_` enthalten. Kleingeschriebene Namen verwenden, keine Leerzeichen, Bindestriche oder Umlaute. Für jeden neuen Tag eine eigene Markdown-Datei unter `_pages/tags/` anlegen, beispielsweise `_pages/tags/php.md`, mit `layout: tag`, `title: php`, `tag: php` und `permalink: /blog/tags/php/` im Front Matter. Das gemeinsame Layout erzeugt ausschließlich die Beiträge dieses Tags; der Test prüft, dass jeder verwendete Tag eine Seite besitzt.
+
+Die Blogübersicht und Beiträge verlinken auf die Themenübersicht unter `/blog/tags/`. Dort stehen pro Tag die zugehörigen Beiträge und ein eigener Feed. `/feed.xml` enthält die neuesten Beiträge insgesamt, `/feed/by_tag/php.xml` beispielsweise nur Beiträge mit dem Tag `php`. Die Feeds werden mit dem GitHub-Pages-kompatiblen `jekyll-feed` automatisch erzeugt und enthalten bis zu zehn Beiträge. Technisch ist das Format Atom, das übliche RSS-Reader unterstützen. Der allgemeine Feed wird über einen Link im HTML-Head automatisch erkannt.
+
+Die laufende Vorschau einschließlich Feedlinks und Tagfilterung testen:
+
+```sh
+BLOG_PREVIEW_URL=http://localhost:4000 node --test .github/scripts/blog-feeds.test.cjs
+```
+
 ## Kommentare und Veröffentlichung
 
-Der Testbeitrag unter <http://localhost:4000/blog/2026/10/18/testbeitrag/> verknüpft über `comments_key: testbeitrag` die Daten in `_data/comments/testbeitrag.json`. `discussion_number: 1` ordnet die vorhandene GitHub Discussion zu. Es wird keine zusätzliche Discussion erzeugt. Für weitere Beiträge eine Discussion anlegen und eine eigene JSON-Datei mit deren Nummer, URL und `comments: []` hinterlegen.
+Der Testbeitrag unter <http://localhost:4000/blog/2026/10/18/testbeitrag/> verknüpft über `comments_key: testbeitrag` die Daten in `_data/comments/testbeitrag.json`. `discussion_number: 1` ordnet die vorhandene GitHub Discussion zu. Es wird keine zusätzliche Discussion erzeugt. Für neue Beiträge zunächst `published: false` im Front Matter setzen. Zum Veröffentlichen auf `published: true` ändern und auf `master` pushen. Der separate Workflow **Publish new blog entry** liest dieses Feld per Bash aus und erstellt bei fehlender Zuordnung eine Discussion in der vorhandenen Kategorie **Blog**, einschließlich Titel und Markdown-Inhalt. Er ergänzt `comments_key` und die JSON-Zuordnung automatisch und committet sie. Bereits vorhandene Zuordnungen bleiben erhalten; eine stabile Blog-ID in der Discussion verhindert Duplikate bei wiederholten Läufen. Ohne explizites `published: true` wird keine Discussion automatisch erstellt. Der Workflow läuft auch manuell und täglich; das Datum wird bei der Discussion-Erstellung nicht ausgewertet, zukünftige Beiträge erhalten daher bereits eine Discussion.
 
-`.github/workflows/publish.yml` synchronisiert bei neuen, bearbeiteten und gelöschten Kommentaren oder Antworten nur die betroffene Discussion. `.github/scripts/sync-comments.cjs` lädt dafür alle Seiten ihrer Kommentare und Antworten, damit auch Änderungen und Löschungen übernommen werden. Pushes auf `master` gleichen nur geänderte Zuordnungsdateien in `_data/comments/` anhand der Git-Differenz des Pushes ab. Änderungen an Synchronisierungsskripten oder Workflow, fehlende Git-Historie und der erste Push lösen einen Vollabgleich aus. Einmal täglich um 03:17 UTC als Absicherung und manuell über `workflow_dispatch` werden ebenfalls alle zugeordneten Discussions vollständig abgeglichen. Ein Commit-Zeitpunkt dient nicht als Kommentar-Zeitmarke, damit zwischenzeitliche Änderungen oder Löschungen nicht verloren gehen. Nur tatsächliche Datenänderungen werden committet. Die Schritte heißen kurz `checkout`, `fetch comments`, `commit`, `configure`, `build`, `upload` und `deploy`. Die Veröffentlichung erfolgt im selben Workflow, weil Commits mit `GITHUB_TOKEN` keine weiteren Push-Workflows auslösen.
+`.github/workflows/publish.yml` synchronisiert bei neuen, bearbeiteten und gelöschten Kommentaren oder Antworten nur die betroffene Discussion. `.github/scripts/sync-comments.cjs` lädt dafür alle Seiten ihrer Kommentare und Antworten, damit auch Änderungen und Löschungen übernommen werden. Nach Pushes auf `master` läuft zuerst **Publish new blog entry**; anschließend gleicht `publish.yml` alle Zuordnungen ab. Änderungen an Synchronisierungsskripten oder Workflow, fehlende Git-Historie und der erste Push lösen einen Vollabgleich aus. Einmal täglich um 03:17 UTC als Absicherung und manuell über `workflow_dispatch` werden ebenfalls alle zugeordneten Discussions vollständig abgeglichen. Ein Commit-Zeitpunkt dient nicht als Kommentar-Zeitmarke, damit zwischenzeitliche Änderungen oder Löschungen nicht verloren gehen. Nur tatsächliche Datenänderungen werden committet. Die Schritte heißen kurz `checkout`, `fetch comments`, `commit`, `configure`, `build`, `upload` und `deploy`. Die Veröffentlichung erfolgt im selben Workflow, weil Commits mit `GITHUB_TOKEN` keine weiteren Push-Workflows auslösen.
+
+Nach erfolgreichem Abschluss von **Publish new blog entry** startet `publish.yml` über `workflow_run` und baut den aktuellen Stand von `master` einschließlich der neuen Discussion-Links. Beide Workflows teilen dieselbe Concurrency-Gruppe. Der neue Workflow benötigt `discussions: write` und `contents: write`, verwendet aber ebenfalls nur `GITHUB_TOKEN`. Ruby wird zur Discussion-Erstellung nicht benötigt.
 
 GitHub Pages muss in den Repository-Einstellungen als Quelle **GitHub Actions** verwenden. Der Workflow verwendet ausschließlich das automatisch bereitgestellte `GITHUB_TOKEN` mit `discussions: read`, `contents: write`, `pages: write` und `id-token: write`. Zusätzliche Secrets sind nicht erforderlich. Branch-Schutzregeln müssen automatische Kommentar-Commits auf `master` zulassen.
 
@@ -43,7 +58,7 @@ GitHub Pages muss in den Repository-Einstellungen als Quelle **GitHub Actions** 
 Synchronisierung testen:
 
 ```sh
-node --test .github/scripts/sync-comments.test.cjs
+node --test .github/scripts/*.test.cjs
 ```
 
 Für den vollständigen Live-Test in Discussion #1 einen Kommentar und eine Antwort verfassen, den Workflow unter Actions abwarten und den Testbeitrag neu laden. Danach Bearbeiten und Löschen ebenfalls prüfen. Die erste Veröffentlichung startet nach dem Push automatisch.

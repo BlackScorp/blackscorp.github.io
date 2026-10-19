@@ -1,7 +1,9 @@
 name: publish
 
 on:
-  push:
+  workflow_run:
+    workflows: ['Publish new blog entry']
+    types: [completed]
     branches: [master]
   discussion_comment:
     types: [created, edited, deleted]
@@ -21,6 +23,7 @@ concurrency:
 
 jobs:
   publish:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     environment:
       name: github-pages

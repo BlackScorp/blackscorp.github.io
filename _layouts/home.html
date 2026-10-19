@@ -14,7 +14,7 @@ layout: default
         {% if post.image %}<div class="blog-entry-image"><img src="{{ post.image | relative_url }}" alt="" loading="lazy"></div>{% endif %}
         <div class="blog-entry-content">
           <p class="blog-entry-meta"><time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: '%d.%m.%Y' }}</time>{% if post.sample %}<span>Beispiel</span>{% endif %}</p>
-          <h3><a href="{{ post.url | relative_url }}">{{ post.title | escape }} <span aria-hidden="true">↗</span></a></h3>
+          <h3><a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a></h3>
         </div>
       </article>
       {% endfor %}

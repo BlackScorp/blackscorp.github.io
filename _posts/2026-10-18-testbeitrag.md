@@ -2,6 +2,7 @@
 title: Testbeitrag für Kommentare und Antworten
 date: 2026-10-18
 category: Blog
+tags: [github, kommentare]
 comments_key: testbeitrag
 summary: Ein öffentlicher Test für die Synchronisierung von GitHub-Kommentaren und Antworten.
 ---

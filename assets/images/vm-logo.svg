@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title">
+  <title id="title">VM, Vitalij Mik</title>
+  <defs>
+    <radialGradient id="background"><stop stop-color="#292a2d"/><stop offset="1" stop-color="#17191b"/></radialGradient>
+    <linearGradient id="gold" x2="0.8" y2="1"><stop stop-color="#f1be68"/><stop offset="1" stop-color="#e5a12e"/></linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="44" fill="url(#background)"/>
+  <circle cx="128" cy="128" r="100" fill="none" stroke="url(#gold)" stroke-width="12"/>
+  <path d="m65 96 31 66 31-66 17 66 44-66 3 66" fill="none" stroke="url(#gold)" stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="m96 162 31-66" fill="none" stroke="#f1be68" stroke-width="17" stroke-linecap="round"/>
+</svg>

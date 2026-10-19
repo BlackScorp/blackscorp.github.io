@@ -2,11 +2,12 @@
   <div class="comment-avatar" aria-hidden="true">{% if include.comment.avatar %}<img src="{{ include.comment.avatar | escape }}" alt="" width="36" height="36" loading="lazy" referrerpolicy="no-referrer">{% else %}{{ include.comment.initials | escape }}{% endif %}</div>
   <div class="comment-content">
     <header class="comment-meta">
-      <strong>{{ include.comment.author | escape }}</strong>
+      <strong>{% if include.comment.author_url %}<a href="{{ include.comment.author_url | escape }}" target="_blank" rel="noopener noreferrer">{{ include.comment.author | escape }}</a>{% else %}{{ include.comment.author | escape }}{% endif %}</strong>
       {% if include.comment.is_author %}<span class="comment-author-label">Autor</span>{% endif %}
       <time datetime="{{ include.comment.date | date_to_xmlschema }}">{{ include.comment.date | date: '%d.%m.%Y, %H:%M' }}</time>
       <a class="comment-permalink" href="#comment-{{ include.comment.id | escape }}" aria-label="Direktlink zum Kommentar von {{ include.comment.author | escape }}">#</a>
     </header>
-    <p class="comment-body">{{ include.comment.body | escape | newline_to_br }}</p>
+    <div class="comment-body prose">{% if include.comment.body_html %}{{ include.comment.body_html }}{% else %}<p>{{ include.comment.body | escape | newline_to_br }}</p>{% endif %}</div>
   </div>
+  {% if include.comment.url %}<a class="primary-link comment-reply" href="{{ include.comment.url | escape }}" target="_blank" rel="noopener noreferrer" aria-label="Auf GitHub auf den Kommentar von {{ include.comment.author | escape }} antworten (öffnet in neuem Tab)"><span class="social-icon social-icon--github" aria-hidden="true"></span>Antworten</a>{% endif %}
 </article>

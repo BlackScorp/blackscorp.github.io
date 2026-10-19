@@ -10,6 +10,13 @@ Diese persönliche Webseite mit CV, Projekten, Kontaktseite und Blog wird mit Je
 - Layoutänderungen nach Möglichkeit in der Vorschau auf Desktop- und Mobilbreite prüfen.
 - Die Kommentarsynchronisierung mit `node --test .github/scripts/sync-comments.test.cjs` prüfen. Der Workflow `.github/workflows/publish.yml` synchronisiert Discussion-Kommentare und Antworten, committet Änderungen und veröffentlicht die Website über GitHub Actions. Die Zuordnung erfolgt über `comments_key` im Beitrag und `discussion_number` in `_data/comments/*.json`.
 
+## Tags und Feeds
+
+- Tags als Inline-Liste im Front Matter pflegen, beispielsweise `tags: [php, jekyll]`. Für die automatische Erzeugung durch `jekyll-feed` nur Buchstaben, Ziffern und Unterstriche verwenden, vorzugsweise kleingeschrieben.
+- Jeder Tag besitzt eine eigene Quelldatei `_pages/tags/TAG.md` mit `layout: tag`, `title: TAG`, `tag: TAG` und `permalink: /blog/tags/TAG/`. Das gemeinsame Layout filtert beim Build, nicht im Browser. Neue Tags benötigen eine solche Seite; die Tests prüfen die Zuordnung.
+- Die Themenübersicht liegt unter `/blog/tags/`, einzelne Tagseiten unter `/blog/tags/TAG/`, der allgemeine Atom-Feed unter `/feed.xml` und Tagfeeds unter `/feed/by_tag/TAG.xml`. Atom wird von RSS-Readern unterstützt.
+- Alle Skripttests mit `node --test .github/scripts/*.test.cjs` ausführen. Mit laufender Docker-Vorschau zusätzlich `BLOG_PREVIEW_URL=http://localhost:4000 node --test .github/scripts/*.test.cjs` verwenden, damit auch die generierten Feedlinks, Tagfilterung und Feed-Autodiscovery geprüft werden.
+
 ## Gestaltung und Assets
 
 - Gemeinsame Seitenbreite und Innenabstände über die vorhandenen Layoutklassen (`.site-frame`, `.page-content`, `.blog-page`) steuern. Keine eigenen `max-width`- oder Außenabstandsregeln für einzelne Seiten wie CV oder Projekte hinzufügen.

@@ -7,6 +7,7 @@ layout: default
     <p class="eyebrow">/blog/{{ page.date | date: '%Y' }}</p>
     <h1>{{ page.title | escape }}</h1>
     <p class="post-meta"><time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: '%d.%m.%Y' }}</time>{% if page.categories.size > 0 %} · {{ page.categories | join: ', ' }}{% endif %}{% if page.sample %} · Beispielbeitrag{% endif %}</p>
+    {% include post-tags.html tags=page.tags %}
   </header>
   {% if page.image %}<img class="post-hero-image" src="{{ page.image | relative_url }}" alt="{{ page.image_alt | escape }}">{% endif %}
   <div class="prose">{{ content }}</div>
@@ -30,6 +31,13 @@ layout: default
         {% else %}
           <p class="comments-notice">Die Diskussion findet auf GitHub statt. Du brauchst dort einen Account. Neue Kommentare erscheinen hier nach der nächsten Aktualisierung.</p>
         {% endif %}
+        <div class="comments-actions">
+          {% if discussion.demo %}
+            <span class="comments-demo-action"><span class="social-icon social-icon--github" aria-hidden="true"></span>Schreib mir deine Meinung</span>
+          {% elsif discussion.discussion_url %}
+            <a class="primary-link" href="{{ discussion.discussion_url | escape }}" target="_blank" rel="noopener noreferrer" aria-label="Schreib mir deine Meinung auf GitHub (öffnet in neuem Tab)"><span class="social-icon social-icon--github" aria-hidden="true"></span>Schreib mir deine Meinung</a>
+          {% endif %}
+        </div>
         {% if discussion.comments.size > 0 %}
           <ol class="comment-threads">
             {% for comment in discussion.comments %}
@@ -48,14 +56,6 @@ layout: default
         {% else %}
           <p class="comments-notice">Noch keine Kommentare. Mach den Anfang!</p>
         {% endif %}
-        <footer class="comments-footer">
-          {% if discussion.demo %}
-            <span class="comments-demo-action">Auf GitHub kommentieren <span aria-hidden="true">↗</span></span>
-            <p>Hier führt später ein Link zur GitHub Discussion dieses Beitrags.</p>
-          {% elsif discussion.discussion_url %}
-            <a class="primary-link" href="{{ discussion.discussion_url | escape }}" target="_blank" rel="noopener noreferrer" aria-label="Auf GitHub kommentieren (öffnet in neuem Tab)">Auf GitHub kommentieren <span aria-hidden="true">↗</span></a>
-          {% endif %}
-        </footer>
       </section>
     {% endif %}
   {% endif %}

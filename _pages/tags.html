@@ -1,0 +1,18 @@
+---
+layout: default
+title: Tags
+permalink: /blog/tags/
+---
+<section class="blog-page">
+  <a class="back-link" href="{{ '/blog/' | relative_url }}">← Alle Beiträge</a>
+  <header class="page-heading">
+    <h1>Tags</h1>
+  </header>
+  {% assign sorted_tags = site.tags | sort %}
+  <ul class="post-tags" aria-label="Tags">
+    {% for tag in sorted_tags %}
+      {% assign tag_url = '/blog/tags/' | append: tag[0] | append: '/' %}
+      <li><a href="{{ tag_url | relative_url }}">{{ tag[0] | escape }} ({{ tag[1].size }})</a></li>
+    {% endfor %}
+  </ul>
+</section>

@@ -14,7 +14,7 @@ layout: default
       {% if project.image %}<a class="blog-entry-image" href="{{ project.url | relative_url }}" aria-label="{{ project.title | escape }} ansehen"><img src="{{ project.image | relative_url }}" alt="" loading="lazy"></a>{% endif %}
       <div class="blog-entry-content">
         <p class="blog-entry-meta"><span>{{ project.category | default: 'Projekt' | escape }}</span></p>
-        <h2><a href="{{ project.url | relative_url }}">{{ project.title | escape }} <span aria-hidden="true">↗</span></a></h2>
+        <h2><a href="{{ project.url | relative_url }}">{{ project.title | escape }}</a></h2>
         <p>{{ project.summary | escape }}</p>
       </div>
     </article>

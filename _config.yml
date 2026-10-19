@@ -12,6 +12,10 @@ repository: BlackScorp/blackscorp.github.io
 baseurl: ""
 markdown: kramdown
 permalink: /blog/:year/:month/:day/:title/
+plugins:
+  - jekyll-feed
+feed:
+  tags: true
 include:
   - _pages
 defaults:

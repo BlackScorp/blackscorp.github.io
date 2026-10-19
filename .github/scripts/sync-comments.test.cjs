@@ -15,12 +15,16 @@ test('syncs paginated comments and replies, edits, deletions and deleted account
   fs.writeFileSync(filepath, JSON.stringify({ discussion_number: 1, comments: [{ id: 'old' }] }));
   const comment = { id: 'comment-1', author: { login: 'BlackScorp' }, body: '<script>test</script>\nNeue Zeile', createdAt: '2026-10-18T12:00:00Z' };
   comment.author.avatarUrl = 'https://avatars.githubusercontent.com/u/1';
+  comment.author.url = 'https://github.com/BlackScorp';
+  comment.url = 'https://github.com/BlackScorp/blackscorp.github.io/discussions/1#discussioncomment-1';
+  comment.bodyHTML = '<p>&lt;script&gt;test&lt;/script&gt;</p><div class="highlight"><pre><span class="pl-k">const</span> value = 1;</pre></div>';
   let deleted = false;
   const cursors = [];
   const page = (nodes, next = null) => ({ nodes, pageInfo: { hasNextPage: Boolean(next), endCursor: next } });
   const github = {
     graphql: async (query, variables) => {
       if (variables.number) return { repository: { discussion: { id: 'discussion-1', url: 'https://github.com/BlackScorp/blackscorp.github.io/discussions/1' } } };
+      assert.match(query, /id url body bodyHTML createdAt author \{ login url avatarUrl/);
       cursors.push(variables.cursor);
       if (variables.id === 'discussion-1') {
         return { node: { comments: deleted ? page([]) : variables.cursor ? page([{ ...comment, id: 'comment-2', author: null }]) : page([comment], 'next-comment') } };
@@ -37,6 +41,12 @@ test('syncs paginated comments and replies, edits, deletions and deleted account
     assert.equal(data.comments[0].body, comment.body);
     assert.equal(data.comments[0].is_author, true);
     assert.equal(data.comments[0].avatar, comment.author.avatarUrl);
+    assert.equal(data.comments[0].author_url, comment.author.url);
+    assert.equal(data.comments[0].url, comment.url);
+    assert.equal(data.comments[0].body_html, comment.bodyHTML);
+    assert.equal(data.comments[0].replies[0].body_html, comment.bodyHTML);
+    assert.equal(data.comments[0].replies[0].url, comment.url);
+    assert.equal(data.comments[1].author_url, null);
     assert.equal(data.comments[0].replies[0].avatar, data.comments[0].avatar);
     assert.equal(data.comments[1].avatar, null);
     assert.equal(data.comments[0].replies[1].avatar, null);
@@ -46,9 +56,11 @@ test('syncs paginated comments and replies, edits, deletions and deleted account
     assert.ok(cursors.includes('next-comment'));
     assert.ok(cursors.includes('next-reply'));
     comment.body = 'Bearbeiteter Kommentar';
+    comment.bodyHTML = '<p>Bearbeiteter Kommentar</p>';
     await sync({ github, context: { repo: { owner: 'BlackScorp', repo: 'blackscorp.github.io' } } });
     data = JSON.parse(fs.readFileSync(filepath));
     assert.equal(data.comments[0].body, 'Bearbeiteter Kommentar');
+    assert.equal(data.comments[0].body_html, '<p>Bearbeiteter Kommentar</p>');
     deleted = true;
     await sync({ github, context: { repo: { owner: 'BlackScorp', repo: 'blackscorp.github.io' } } });
     assert.deepEqual(JSON.parse(fs.readFileSync(filepath)).comments, []);
