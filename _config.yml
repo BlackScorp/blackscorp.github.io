@@ -14,6 +14,7 @@ markdown: kramdown
 permalink: /blog/:year/:month/:day/:title/
 plugins:
   - jekyll-feed
+  - jekyll-sitemap
 feed:
   tags: true
 include:

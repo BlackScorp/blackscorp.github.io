@@ -1,0 +1,19 @@
+---
+layout: null
+permalink: /llm.txt
+sitemap: false
+---
+# {{ site.title }}
+
+> {{ site.description | strip_html | normalize_whitespace }}
+
+Sprache: {{ site.lang }}
+
+## Seiten
+{% assign pages = site.pages | sort: 'url' %}{% for entry in pages %}{% if entry.title and entry.llm != false and entry.sitemap != false %}
+- [{{ entry.title | strip_html | normalize_whitespace }}]({{ entry.url | absolute_url }}){% if entry.description %}: {{ entry.description | strip_html | normalize_whitespace }}{% endif %}
+{% endif %}{% endfor %}
+## Blogbeiträge
+{% for entry in site.posts %}{% if entry.llm != false and entry.sitemap != false %}{% assign description = entry.description | default: entry.summary | default: entry.excerpt %}
+- [{{ entry.title | strip_html | normalize_whitespace }}]({{ entry.url | absolute_url }}): {{ description | strip_html | normalize_whitespace }}
+{% endif %}{% endfor %}

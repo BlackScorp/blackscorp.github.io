@@ -9,4 +9,4 @@ services:
     volumes:
       - ..:/site
     environment:
-      JEKYLL_ENV: development
+      JEKYLL_ENV: production

@@ -1,6 +1,8 @@
 ---
 permalink: /cv/
 layout: page
+published: false
+sitemap: false
 cv: true
 kicker: Lebenslauf
 title: Vitalij Mik
