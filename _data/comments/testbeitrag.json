@@ -21,6 +21,16 @@
           "body": "und ein reply mit einem edit"
         }
       ]
+    },
+    {
+      "id": "DC_kwDOEtjoKc4BIm5L",
+      "author": "BlackScorp",
+      "initials": "BL",
+      "avatar": "https://avatars.githubusercontent.com/u/765140?s=72&v=4",
+      "is_author": true,
+      "date": "2026-10-19T06:32:15Z",
+      "body": "Kommentar mit Code\r\n\r\n```php\r\n<?php\r\n\r\n$foo = new PDO():\r\n```",
+      "replies": []
     }
   ]
 }
