@@ -31,7 +31,7 @@ Noto Sans, Noto Sans Mono und die Navigationsicons liegen lokal unter `assets/fo
 
 Für ein eigenes Foto die Datei beispielsweise als `assets/images/profile.jpg` ablegen und in `_config.yml` `profile_image: "/assets/images/profile.jpg"` setzen. GitHub, LinkedIn und YouTube werden unter `social` in `_config.yml` eingetragen; `contact_email` ist optional. Nach Änderungen an `_config.yml` Docker Compose neu starten.
 
-Aktuell enthält `_posts/` ausschließlich den Testbeitrag für Kommentare und Antworten. Die ungenutzten Bilder in `assets/images/blog/` stammen aus der Layout-Demo.
+Aktuell sind keine Blogbeiträge veröffentlicht. Die ungenutzten Bilder in `assets/images/blog/` stammen aus der Layout-Demo.
 
 ## Tags und Feeds
 
@@ -47,7 +47,7 @@ BLOG_PREVIEW_URL=http://localhost:4000 node --test .github/scripts/blog-feeds.te
 
 ## Kommentare und Veröffentlichung
 
-Der Testbeitrag unter <http://localhost:4000/blog/2026/10/18/testbeitrag/> verknüpft über `comments_key: testbeitrag` die Daten in `_data/comments/testbeitrag.json`. `discussion_number: 1` ordnet die vorhandene GitHub Discussion zu. Es wird keine zusätzliche Discussion erzeugt. Für neue Beiträge zunächst `published: false` im Front Matter setzen. Zum Veröffentlichen auf `published: true` ändern und auf `master` pushen. Der separate Workflow **Publish new blog entry** liest dieses Feld per Bash aus und erstellt bei fehlender Zuordnung eine Discussion in der vorhandenen Kategorie **Blog**, einschließlich Titel und Markdown-Inhalt. Er ergänzt `comments_key` und die JSON-Zuordnung automatisch und committet sie. Bereits vorhandene Zuordnungen bleiben erhalten; eine stabile Blog-ID in der Discussion verhindert Duplikate bei wiederholten Läufen. Ohne explizites `published: true` wird keine Discussion automatisch erstellt. Der Workflow läuft auch manuell und täglich; das Datum wird bei der Discussion-Erstellung nicht ausgewertet, zukünftige Beiträge erhalten daher bereits eine Discussion.
+Ein Beitrag verknüpft über `comments_key` seine Daten in `_data/comments/<comments_key>.json`. `discussion_number` ordnet die zugehörige GitHub Discussion zu. Für neue Beiträge zunächst `published: false` im Front Matter setzen. Zum Veröffentlichen auf `published: true` ändern und auf `master` pushen. Der separate Workflow **Publish new blog entry** liest dieses Feld per Bash aus und erstellt bei fehlender Zuordnung eine Discussion in der vorhandenen Kategorie **Blog**, einschließlich Titel und Markdown-Inhalt. Er ergänzt `comments_key` und die JSON-Zuordnung automatisch und committet sie. Bereits vorhandene Zuordnungen bleiben erhalten; eine stabile Blog-ID in der Discussion verhindert Duplikate bei wiederholten Läufen. Ohne explizites `published: true` wird keine Discussion automatisch erstellt. Der Workflow läuft auch manuell und täglich; das Datum wird bei der Discussion-Erstellung nicht ausgewertet, zukünftige Beiträge erhalten daher bereits eine Discussion.
 
 `.github/workflows/publish.yml` synchronisiert bei neuen, bearbeiteten und gelöschten Kommentaren oder Antworten nur die betroffene Discussion. `.github/scripts/sync-comments.cjs` lädt dafür alle Seiten ihrer Kommentare und Antworten, damit auch Änderungen und Löschungen übernommen werden. Nach Pushes auf `master` läuft zuerst **Publish new blog entry**; anschließend gleicht `publish.yml` alle Zuordnungen ab. Änderungen an Synchronisierungsskripten oder Workflow, fehlende Git-Historie und der erste Push lösen einen Vollabgleich aus. Einmal täglich um 03:17 UTC als Absicherung und manuell über `workflow_dispatch` werden ebenfalls alle zugeordneten Discussions vollständig abgeglichen. Ein Commit-Zeitpunkt dient nicht als Kommentar-Zeitmarke, damit zwischenzeitliche Änderungen oder Löschungen nicht verloren gehen. Nur tatsächliche Datenänderungen werden committet. Die Schritte heißen kurz `checkout`, `fetch comments`, `commit`, `configure`, `build`, `upload` und `deploy`. Die Veröffentlichung erfolgt im selben Workflow, weil Commits mit `GITHUB_TOKEN` keine weiteren Push-Workflows auslösen.
 
@@ -63,4 +63,4 @@ Synchronisierung testen:
 node --test .github/scripts/*.test.cjs
 ```
 
-Für den vollständigen Live-Test in Discussion #1 einen Kommentar und eine Antwort verfassen, den Workflow unter Actions abwarten und den Testbeitrag neu laden. Danach Bearbeiten und Löschen ebenfalls prüfen. Die erste Veröffentlichung startet nach dem Push automatisch.
+Für den vollständigen Live-Test in der Discussion eines veröffentlichten Beitrags einen Kommentar und eine Antwort verfassen, den Workflow unter Actions abwarten und den Beitrag neu laden. Danach Bearbeiten und Löschen ebenfalls prüfen. Die erste Veröffentlichung startet nach dem Push automatisch.

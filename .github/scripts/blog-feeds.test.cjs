@@ -7,7 +7,7 @@ const root = path.resolve(__dirname, '../..');
 const preview = process.env.BLOG_PREVIEW_URL;
 
 function postTags() {
-  return readdirSync(path.join(root, '_posts')).flatMap((filename) => {
+  return readdirSync(path.join(root, '_posts')).filter((filename) => /\.(md|markdown)$/.test(filename)).flatMap((filename) => {
     const source = readFileSync(path.join(root, '_posts', filename), 'utf8');
     const frontMatter = source.match(/^---\r?\n([\s\S]*?)\r?\n---/);
     assert.ok(frontMatter, `${filename}: Front Matter fehlt`);
@@ -40,6 +40,9 @@ test('preview exposes the general feed, tag feeds and navigation', { skip: !prev
   }
 
   const blog = await get('/blog/');
+  const navigation = blog.match(/<nav class="site-nav"[^>]*>([\s\S]*?)<\/nav>/);
+  assert.ok(navigation);
+  assert.match(navigation[1], /<a href="https:\/\/paypal\.me\/blackscorp" target="_blank" rel="noopener noreferrer" aria-label="Support über PayPal \(öffnet in neuem Tab\)"><svg[^>]+aria-hidden="true">[\s\S]*?<\/svg><span>Support<\/span><\/a>/);
   assert.match(blog, /<link[^>]+type="application\/atom\+xml"[^>]+href="[^"]*\/feed.xml"/);
   assert.match(blog, /class="blog-feed-icon" href="\/feed.xml"[^>]+target="_blank" rel="noopener noreferrer"[^>]+aria-label="[^"]*öffnet in neuem Tab/);
   assert.doesNotMatch(blog, /Alle Tags|RSS-Feed: alle Beiträge/);
