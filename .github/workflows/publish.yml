@@ -1,4 +1,4 @@
-name: Kommentare synchronisieren und Website veröffentlichen
+name: publish
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     types: [created, edited, deleted]
   workflow_dispatch:
   schedule:
-    - cron: '17 * * * *'
+    - cron: '17 3 * * *'
 
 permissions:
   contents: write
@@ -26,15 +26,17 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
+      - name: checkout
+        uses: actions/checkout@v4
         with:
           ref: master
-      - name: Kommentare und Antworten laden
+          fetch-depth: 0
+      - name: fetch comments
         uses: actions/github-script@v7
         with:
           script: |
             await require('./.github/scripts/sync-comments.cjs')({ github, context });
-      - name: Geänderte Kommentare speichern
+      - name: commit
         shell: bash
         run: |
           git add _data/comments/*.json
@@ -42,12 +44,15 @@ jobs:
             git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Update blog comments and replies from GitHub Discussions'
             git push origin HEAD:master
           fi
-      - uses: actions/configure-pages@v5
-      - uses: actions/jekyll-build-pages@v1
+      - name: configure
+        uses: actions/configure-pages@v5
+      - name: build
+        uses: actions/jekyll-build-pages@v1
         with:
           source: ./
           destination: ./_site
-      - uses: actions/upload-pages-artifact@v3
-      - name: Website veröffentlichen
+      - name: upload
+        uses: actions/upload-pages-artifact@v3
+      - name: deploy
         id: deployment
         uses: actions/deploy-pages@v4

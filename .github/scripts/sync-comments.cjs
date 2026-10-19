@@ -1,5 +1,6 @@
 const fs = require('node:fs');
 const path = require('node:path');
+const { execFileSync } = require('node:child_process');
 
 async function collectPages(fetchPage) {
   const nodes = [];
@@ -28,10 +29,35 @@ function serializeComment(comment, owner) {
 module.exports = async ({ github, context }) => {
   const { owner, repo } = context.repo;
   const directory = path.join(process.cwd(), '_data', 'comments');
+  const eventDiscussion = context.eventName === 'discussion_comment'
+    ? context.payload?.discussion?.number
+    : null;
+  if (context.eventName === 'discussion_comment' && !Number.isInteger(eventDiscussion)) {
+    throw new Error('Comment event is missing its discussion number');
+  }
+  let changedFiles = null;
+  const before = context.payload?.before;
+  const after = context.payload?.after;
+  if (context.eventName === 'push' && /^[a-f0-9]{40}$/.test(before || '') &&
+      /^[a-f0-9]{40}$/.test(after || '') && !/^0+$/.test(before)) {
+    try {
+      changedFiles = new Set(execFileSync('git', ['diff', '--name-only', before, after], {
+        encoding: 'utf8',
+      }).trim().split('\n'));
+    } catch {
+      changedFiles = null;
+    }
+    if (changedFiles && [...changedFiles].some(filename =>
+      filename.startsWith('.github/scripts/') || filename === '.github/workflows/publish.yml')) {
+      changedFiles = null;
+    }
+  }
   for (const filename of fs.readdirSync(directory).filter(name => name.endsWith('.json'))) {
+    if (changedFiles && !changedFiles.has(`_data/comments/${filename}`)) continue;
     const filepath = path.join(directory, filename);
     const data = JSON.parse(fs.readFileSync(filepath, 'utf8'));
     if (!Number.isInteger(data.discussion_number)) continue;
+    if (eventDiscussion !== null && data.discussion_number !== eventDiscussion) continue;
     const number = data.discussion_number;
     const result = await github.graphql(`
       query($owner: String!, $repo: String!, $number: Int!) {
