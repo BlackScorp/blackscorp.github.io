@@ -5,10 +5,12 @@ Die Seite wird mit Jekyll gebaut. Lokal verwendet Docker Compose das gleiche `gi
 ## Vorschau starten
 
 ```sh
-docker compose up --build
+make start
 ```
 
-Danach ist die Seite unter <http://localhost:4000> erreichbar. Änderungen an Seiten und Beiträgen werden automatisch neu gebaut. Mit `Ctrl+C` stoppen; bei Bedarf mit `docker compose down` aufräumen.
+Dockerfile, Gemfile, Lockdatei und `docker-compose.yaml` liegen unter `jekyll/`. `make start` wechselt dorthin und führt `docker compose up -d` aus. Danach ist die Seite unter <http://localhost:4000> erreichbar. Änderungen an Seiten und Beiträgen werden automatisch neu gebaut. Stoppen mit `docker compose -f jekyll/docker-compose.yaml down`; nach Änderungen am Dockerfile oder den Gems mit `docker compose -f jekyll/docker-compose.yaml up -d --build` neu bauen. Nach Änderungen an `_config.yml` mit `docker compose -f jekyll/docker-compose.yaml restart jekyll` neu starten.
+
+Den lokalen Port in `jekyll/docker-compose.yaml` unter `ports` ändern: `127.0.0.1:8080:4000` stellt die Vorschau beispielsweise auf Port 8080 bereit. Der rechte Port bleibt der interne Jekyll-Port, der über `command` in derselben Datei gesetzt wird. `EXPOSE` ist dafür nicht nötig und veröffentlicht selbst keinen Port. Nach Portänderungen erneut `make start` ausführen.
 
 ## Inhalte schreiben
 

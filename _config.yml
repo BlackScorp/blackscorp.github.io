@@ -25,9 +25,7 @@ defaults:
     values:
       layout: post
 exclude:
-  - Dockerfile
-  - compose.yaml
-  - Gemfile
-  - Gemfile.lock
+  - jekyll
+  - Makefile
   - README.md
   - AGENTS.md

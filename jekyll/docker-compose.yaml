@@ -1,0 +1,12 @@
+name: blog
+
+services:
+  jekyll:
+    build: .
+    command: ["bundle", "exec", "jekyll", "serve", "--host", "0.0.0.0", "--port", "4000", "--force_polling"]
+    ports:
+      - "127.0.0.1:4000:4000"
+    volumes:
+      - ..:/site
+    environment:
+      JEKYLL_ENV: development
