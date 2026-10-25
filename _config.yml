@@ -28,6 +28,7 @@ defaults:
       published: false
 exclude:
   - jekyll
+  - vendor
   - scripts
   - Makefile
   - README.md
