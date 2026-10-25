@@ -7,8 +7,9 @@ Diese persönliche Webseite mit CV, Projekten, Kontaktseite und Blog wird mit Je
 - Die Entwicklungsumgebung liegt unter `jekyll/` und läuft im Docker-Container; die Vorschau ist standardmäßig unter <http://localhost:4000> erreichbar. Vor dem Starten mit `docker compose -f jekyll/docker-compose.yaml ps` prüfen, ob der Jekyll-Dienst bereits läuft. Nur wenn er nicht läuft, mit `make start` starten. Nach Änderungen am Dockerfile oder den Gems mit `docker compose -f jekyll/docker-compose.yaml up -d --build` neu bauen. Den lokalen Port unter `ports` in der Compose-Datei ändern; der interne Port wird dort über `command` gesetzt.
 - Die Quelldateien sind in den Container eingebunden. `jekyll serve --force_polling` baut Änderungen an Seiten, Beiträgen, Layouts und Styles automatisch neu. Dafür keinen zusätzlichen Container mit `docker compose run` starten und keinen manuellen Build ausführen. Nach Änderungen an `_config.yml` den bestehenden Dienst mit `docker compose -f jekyll/docker-compose.yaml restart jekyll` neu starten.
 - Falls ein manueller Build oder Jekyll-Befehl tatsächlich nötig ist, ihn im laufenden Container mit `docker compose -f jekyll/docker-compose.yaml exec jekyll ...` ausführen. Eine lokale Ruby- oder Bundler-Installation wird nicht vorausgesetzt.
+- Alle Tests mit `make test` ausführen. Node.js und weitere Testabhängigkeiten sind im Jekyll-Container installiert; der Testlauf bleibt bei Erfolg still und gibt bei Fehlern nur die Fehlermeldungen aus.
 - Layoutänderungen nach Möglichkeit in der Vorschau auf Desktop- und Mobilbreite prüfen.
-- Die Kommentarsynchronisierung mit `node --test .github/scripts/sync-comments.test.cjs` prüfen. Der Workflow `.github/workflows/publish.yml` synchronisiert Discussion-Kommentare und Antworten, committet Änderungen und veröffentlicht die Website über GitHub Actions. Die Zuordnung erfolgt über `comments_key` im Beitrag und `discussion_number` in `_data/comments/*.json`.
+- Der Workflow `.github/workflows/publish.yml` synchronisiert Discussion-Kommentare und Antworten, committet Änderungen und veröffentlicht die Website über GitHub Actions. Die Zuordnung erfolgt über `comments_key` im Beitrag und `discussion_number` in `_data/comments/*.json`.
 
 ## Blogbeiträge
 
@@ -22,7 +23,7 @@ Diese persönliche Webseite mit CV, Projekten, Kontaktseite und Blog wird mit Je
 - Tags als Inline-Liste im Front Matter pflegen, beispielsweise `tags: [php, jekyll]`. Für Tagseiten und Feeds nur Buchstaben, Ziffern und Unterstriche verwenden, vorzugsweise kleingeschrieben.
 - Jeder Tag besitzt eine eigene Quelldatei `_pages/tags/TAG.md` mit `layout: tag`, `title: TAG`, `tag: TAG` und `permalink: /blog/tags/TAG/`. Das gemeinsame Layout filtert beim Build, nicht im Browser. Neue Tags benötigen eine solche Seite; die Tests prüfen die Zuordnung.
 - Die Themenübersicht liegt unter `/blog/tags/`, einzelne Tagseiten unter `/blog/tags/TAG/`, der allgemeine Atom-Feed unter `/feed.xml` und Tagfeeds unter `/feed/by_tag/TAG.xml`. Atom wird von RSS-Readern unterstützt.
-- Alle Skripttests mit `node --test .github/scripts/*.test.cjs` ausführen. Mit laufender Docker-Vorschau zusätzlich `BLOG_PREVIEW_URL=http://localhost:4000 node --test .github/scripts/*.test.cjs` verwenden, damit auch die generierten Feedlinks, Tagfilterung und Feed-Autodiscovery geprüft werden.
+- `make test` prüft im laufenden Jekyll-Container auch die generierten Feedlinks, Tagfilterung und Feed-Autodiscovery der lokalen Vorschau.
 
 ## Gestaltung und Assets
 
