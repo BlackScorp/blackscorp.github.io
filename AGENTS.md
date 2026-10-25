@@ -22,7 +22,7 @@ Diese persönliche Webseite mit CV, Projekten, Kontaktseite und Blog wird mit Je
 ## Tags und Feeds
 
 - Tags als Inline-Liste im Front Matter pflegen, beispielsweise `tags: [php, jekyll]`. Für Tagseiten und Feeds nur Buchstaben, Ziffern und Unterstriche verwenden, vorzugsweise kleingeschrieben.
-- Jeder Tag besitzt eine eigene Quelldatei `_pages/tags/TAG.md` mit `layout: tag`, `title: TAG`, `tag: TAG` und `permalink: /blog/tags/TAG/`. Das gemeinsame Layout filtert beim Build, nicht im Browser. Neue Tags benötigen eine solche Seite; die Tests prüfen die Zuordnung.
+- Ein Generator unter `_plugins/tag_pages.rb` erzeugt für jeden veröffentlichten Tag eine Seite unter `/blog/tags/TAG/` sowie einen Atom-Feed unter `/feed/by_tag/TAG.xml`. Die gemeinsamen Layouts filtern beim Build, nicht im Browser. Neue Tags benötigen keine eigenen Quelldateien; `make test` prüft die generierten Seiten und Feeds.
 - Die Themenübersicht liegt unter `/blog/tags/`, einzelne Tagseiten unter `/blog/tags/TAG/`, der allgemeine Atom-Feed unter `/feed.xml` und Tagfeeds unter `/feed/by_tag/TAG.xml`. Atom wird von RSS-Readern unterstützt.
 - `make test` prüft im laufenden Jekyll-Container auch die generierten Feedlinks, Tagfilterung und Feed-Autodiscovery der lokalen Vorschau.
 

@@ -40,7 +40,7 @@ Die Bilder in `assets/images/blog/` stammen aus der Layout-Demo.
 
 ## Tags und Feeds
 
-Tags im Front Matter eines Beitrags als Liste ergänzen, zum Beispiel `tags: [php, jekyll]`. Tag-Namen dürfen für die automatische Feed-Erzeugung ausschließlich die Zeichen `a-z`, `A-Z`, `0-9` und `_` enthalten. Kleingeschriebene Namen verwenden, keine Leerzeichen, Bindestriche oder Umlaute. Für jeden neuen Tag eine eigene Markdown-Datei unter `_pages/tags/` anlegen, beispielsweise `_pages/tags/php.md`, mit `layout: tag`, `title: php`, `tag: php` und `permalink: /blog/tags/php/` im Front Matter. Das gemeinsame Layout erzeugt ausschließlich die Beiträge dieses Tags; der Test prüft, dass jeder verwendete Tag eine Seite besitzt.
+Tags im Front Matter eines Beitrags als Liste ergänzen, zum Beispiel `tags: [php, jekyll]`. Tag-Namen dürfen für die automatische Seitenerzeugung und Feed-Erzeugung ausschließlich die Zeichen `a-z`, `A-Z`, `0-9` und `_` enthalten. Kleingeschriebene Namen verwenden, keine Leerzeichen, Bindestriche oder Umlaute. Ein Jekyll-Generator erzeugt für jeden veröffentlichten Tag automatisch eine Seite unter `/blog/tags/TAG/` und einen Atom-Feed unter `/feed/by_tag/TAG.xml`. Die gemeinsame Layoutdatei `_layouts/tag.html` rendert die passenden Beiträge. Für neue Tags sind keine einzelnen Quelldateien nötig.
 
 Die Blogübersicht und Beiträge verlinken auf die Themenübersicht unter `/blog/tags/`. Dort stehen pro Tag die zugehörigen Beiträge und ein eigener Feed. `/feed.xml` enthält die neuesten Beiträge insgesamt, `/feed/by_tag/php.xml` beispielsweise nur Beiträge mit dem Tag `php`. Die Feed-Layouts erzeugen bis zu zehn Beiträge im Atom-Format, das übliche RSS-Reader unterstützen. Der allgemeine Feed wird über einen Link im HTML-Head automatisch erkannt.
 

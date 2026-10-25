@@ -6,6 +6,9 @@ date: 2026-10-25
 permalink: /blog/dynamische-funktionen-mit-jekyll-und-github-pages/
 summary: "Wie ich mit Jekyll und GitHub Pages einen statischen Blog mit Kommentaren und automatischen Ankündigungen aufgebaut habe."
 description: "Ein Blog mit Jekyll und GitHub Pages muss nicht auf Kommentare verzichten: So ergänze ich eine statische Website mit GitHub Discussions und Actions."
+image: jekyll-github-pages-blog.png
+image_alt: "Eine Markdown-Seite wird über Git in eine Website übertragen"
+image_ai_generated: true
 tags: [github_pages, jekyll, docker, github_actions, bloggen]
 keywords: [dynamische Funktionen statische Website, Jekyll Blog, GitHub Pages, GitHub Actions, GitHub Discussions, Blog Kommentare]
 ---

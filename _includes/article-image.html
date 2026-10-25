@@ -1,0 +1,7 @@
+{% assign article_image_url = include.src %}
+{% assign image_first_character = include.src | slice: 0 %}
+{% unless image_first_character == '/' %}{% assign article_image_url = page.url | append: include.src %}{% endunless %}
+<figure class="article-image-figure">
+  <img class="article-image" src="{{ article_image_url | relative_url }}" alt="{{ include.alt | escape }}" loading="lazy">
+  {% if include.ai_generated == 'true' %}<figcaption>KI-generiertes Bild</figcaption>{% elsif include.caption %}<figcaption>{{ include.caption | escape }}</figcaption>{% endif %}
+</figure>

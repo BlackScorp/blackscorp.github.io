@@ -9,7 +9,15 @@ layout: default
     <p class="post-meta"><time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: '%d.%m.%Y' }}</time>{% if page.categories.size > 0 %} · {{ page.categories | join: ', ' }}{% endif %}{% if page.sample %} · Beispielbeitrag{% endif %}</p>
     {% include post-tags.html tags=page.tags %}
   </header>
-  {% if page.image %}<img class="post-hero-image" src="{{ page.image | relative_url }}" alt="{{ page.image_alt | escape }}">{% endif %}
+  {% if page.image %}
+    {% assign post_image_url = page.image %}
+    {% assign image_first_character = page.image | slice: 0 %}
+    {% unless image_first_character == '/' %}{% assign post_image_url = page.url | append: page.image %}{% endunless %}
+    <figure class="post-image-figure">
+      <img class="post-hero-image" src="{{ post_image_url | relative_url }}" alt="{{ page.image_alt | escape }}">
+      {% if page.image_ai_generated %}<figcaption>KI-generiertes Bild</figcaption>{% elsif page.image_caption %}<figcaption>{{ page.image_caption | escape }}</figcaption>{% endif %}
+    </figure>
+  {% endif %}
   <div class="prose">{{ content }}</div>
   {% if page.comments_key %}
     {% assign discussion = site.data.comments[page.comments_key] %}

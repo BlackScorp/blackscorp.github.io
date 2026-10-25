@@ -32,16 +32,37 @@ test('blog posts support Mermaid diagrams from local assets', () => {
 });
 
 test('all article tags have a page and support generated feeds', () => {
+  const generator = readFileSync(path.join(root, '_plugins/tag_pages.rb'), 'utf8');
   for (const tag of articleTags()) {
     assert.match(tag, /^[a-zA-Z0-9_]+$/, `Nicht unterstützter Feed-Tag: ${tag}`);
-    const page = readFileSync(path.join(root, '_pages/tags', `${tag}.md`), 'utf8');
-    assert.ok(page.includes(`tag: ${tag}\n`));
-    assert.ok(page.includes(`permalink: /blog/tags/${tag}/\n`));
   }
+  assert.match(generator, /site\.collections\.fetch\('articles'\)/);
+  assert.match(generator, /'layout' => 'tag'/);
+  assert.match(generator, /'layout' => 'feed'/);
+  assert.match(generator, /"blog\/tags\/\#\{tag\}"/);
+  assert.match(generator, /"\/feed\/by_tag\/\#\{tag\}\.xml"/);
+  assert.match(generator, /published\?\(article, site\.time\)/);
+  assert.ok(!existsSync(path.join(root, '_pages/tags')));
+  assert.ok(!existsSync(path.join(root, '_pages/feed/by_tag')));
+  assert.ok(existsSync(path.join(root, '_layouts/tag.html')));
+  assert.ok(existsSync(path.join(root, '_layouts/feed.xml')));
   const config = readFileSync(path.join(root, '_config.yml'), 'utf8');
   assert.match(config, /collections:\s*\n\s+articles:/);
   assert.match(config, /permalink:\s*\/blog\/:path/);
 });
+
+function publishedArticleTags() {
+  return readdirSync(path.join(root, '_articles'), { recursive: true }).filter((filename) => /\.(md|markdown)$/.test(filename)).flatMap((filename) => {
+    const source = readFileSync(path.join(root, '_articles', filename), 'utf8');
+    const frontMatter = source.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+    assert.ok(frontMatter, `${filename}: Front Matter fehlt`);
+    if (!/^published:\s*true\s*$/m.test(frontMatter[1])) return [];
+    const date = frontMatter[1].match(/^date:\s*['"]?(\d{4}-\d{2}-\d{2})/m)?.[1];
+    if (!date || date > new Date().toISOString().slice(0, 10)) return [];
+    const tags = frontMatter[1].match(/^tags:\s*\[([^\]\r\n]*)\]\s*$/m);
+    return tags ? tags[1].split(',').map((tag) => tag.trim().replace(/^['"]|['"]$/g, '')).filter(Boolean) : [];
+  });
+}
 
 test('preview exposes the general feed, tag feeds and navigation', { skip: !preview }, async () => {
   async function get(url) {
@@ -57,13 +78,13 @@ test('preview exposes the general feed, tag feeds and navigation', { skip: !prev
   assert.match(blog, /<link[^>]+type="application\/atom\+xml"[^>]+href="[^"]*\/feed.xml"/);
   assert.match(blog, /class="blog-feed-icon" href="\/feed.xml"[^>]+target="_blank" rel="noopener noreferrer"[^>]+aria-label="[^"]*öffnet in neuem Tab/);
   assert.doesNotMatch(blog, /Alle Tags|RSS-Feed: alle Beiträge/);
-  for (const tag of new Set(articleTags())) {
+  for (const tag of new Set(publishedArticleTags())) {
     assert.ok(blog.includes(`href="/blog/tags/${encodeURIComponent(tag)}/"`));
   }
   const overview = await get('/blog/tags/');
   const stylesheet = await get('/assets/css/site.css');
   assert.doesNotMatch(stylesheet, /\.tag-section:target/);
-  for (const tag of new Set(articleTags())) {
+  for (const tag of new Set(publishedArticleTags())) {
     assert.ok(overview.includes(`href="/blog/tags/${tag}/"`));
     const page = await get(`/blog/tags/${tag}/`);
     assert.match(page, new RegExp(`<h1>${tag}</h1>`));

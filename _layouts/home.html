@@ -12,7 +12,7 @@ layout: default
     <div class="blog-list">
       {% for post in articles limit:3 %}
       <article class="blog-entry">
-        {% if post.image %}<div class="blog-entry-image"><img src="{{ post.image | relative_url }}" alt="" loading="lazy"></div>{% endif %}
+        {% if post.image %}{% assign post_image_url = post.image %}{% assign image_first_character = post.image | slice: 0 %}{% unless image_first_character == '/' %}{% assign post_image_url = post.url | append: post.image %}{% endunless %}<div class="blog-entry-image"><img src="{{ post_image_url | relative_url }}" alt="" loading="lazy">{% if post.image_ai_generated %}<span class="image-ai-badge">KI-generiert</span>{% endif %}</div>{% endif %}
         <div class="blog-entry-content">
           <p class="blog-entry-meta"><time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: '%d.%m.%Y' }}</time>{% if post.sample %}<span>Beispiel</span>{% endif %}</p>
           <h3><a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a></h3>
