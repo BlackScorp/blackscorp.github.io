@@ -1,4 +1,5 @@
 ---
+comments_key: 1-dynamische-funktionen-mit-jekyll-und-github-pages
 title: "Dynamische Funktionen mit Jekyll und GitHub Pages"
 published: true
 date: 2026-10-25
