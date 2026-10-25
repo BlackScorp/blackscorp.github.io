@@ -13,8 +13,10 @@ layout: default
     {% assign post_image_url = page.image %}
     {% assign image_first_character = page.image | slice: 0 %}
     {% unless image_first_character == '/' %}{% assign post_image_url = page.url | append: page.image %}{% endunless %}
+    {% if page.image_mobile %}{% assign post_image_mobile_url = page.image_mobile %}{% assign image_mobile_first_character = page.image_mobile | slice: 0 %}{% unless image_mobile_first_character == '/' %}{% assign post_image_mobile_url = page.url | append: page.image_mobile %}{% endunless %}{% endif %}
+    {% if page.image_tablet %}{% assign post_image_tablet_url = page.image_tablet %}{% assign image_tablet_first_character = page.image_tablet | slice: 0 %}{% unless image_tablet_first_character == '/' %}{% assign post_image_tablet_url = page.url | append: page.image_tablet %}{% endunless %}{% endif %}
     <figure class="post-image-figure">
-      <img class="post-hero-image" src="{{ post_image_url | relative_url }}" alt="{{ page.image_alt | escape }}" width="1536" height="1024" fetchpriority="high">
+      <img class="post-hero-image" src="{{ post_image_url | relative_url }}"{% if post_image_mobile_url and post_image_tablet_url %} srcset="{{ post_image_mobile_url | relative_url }} 640w, {{ post_image_tablet_url | relative_url }} 1024w, {{ post_image_url | relative_url }} {{ page.image_width | default: 1536 }}w" sizes="(max-width: 680px) calc(100vw - 86px), (max-width: 900px) calc(100vw - 136px), 900px"{% endif %} alt="{{ page.image_alt | escape }}" width="{{ page.image_width | default: 1536 }}" height="{{ page.image_height | default: 1024 }}" fetchpriority="high">
       {% if page.image_ai_generated %}<figcaption>KI-generiertes Bild</figcaption>{% elsif page.image_caption %}<figcaption>{{ page.image_caption | escape }}</figcaption>{% endif %}
     </figure>
   {% endif %}

@@ -9,6 +9,8 @@
     {% if page.keywords %}<meta name="keywords" content="{{ page.keywords | join: ', ' | escape }}">{% endif %}
     <link rel="icon" href="{{ '/favicon.ico' | relative_url }}" sizes="16x16 32x32 48x48 64x64 128x128 256x256" type="image/x-icon">
     <link rel="icon" href="{{ '/assets/images/vm-logo.svg' | relative_url }}" type="image/svg+xml">
+    <link rel="preload" href="{{ '/assets/fonts/noto-sans-latin.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ '/assets/fonts/noto-sans-mono-latin.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
     <link rel="alternate" type="application/atom+xml" title="{{ site.title | escape }}" href="{{ '/feed.xml' | relative_url }}">
   </head>

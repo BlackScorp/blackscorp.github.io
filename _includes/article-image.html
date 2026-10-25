@@ -1,7 +1,9 @@
 {% assign article_image_url = include.src %}
 {% assign image_first_character = include.src | slice: 0 %}
 {% unless image_first_character == '/' %}{% assign article_image_url = page.url | append: include.src %}{% endunless %}
+{% if include.mobile %}{% assign article_image_mobile_url = include.mobile %}{% assign mobile_first_character = include.mobile | slice: 0 %}{% unless mobile_first_character == '/' %}{% assign article_image_mobile_url = page.url | append: include.mobile %}{% endunless %}{% endif %}
+{% if include.tablet %}{% assign article_image_tablet_url = include.tablet %}{% assign tablet_first_character = include.tablet | slice: 0 %}{% unless tablet_first_character == '/' %}{% assign article_image_tablet_url = page.url | append: include.tablet %}{% endunless %}{% endif %}
 <figure class="article-image-figure">
-  <img class="article-image" src="{{ article_image_url | relative_url }}" alt="{{ include.alt | escape }}" loading="lazy">
+  <img class="article-image" src="{{ article_image_url | relative_url }}"{% if article_image_mobile_url and article_image_tablet_url %} srcset="{{ article_image_mobile_url | relative_url }} 640w, {{ article_image_tablet_url | relative_url }} 1024w, {{ article_image_url | relative_url }} {{ include.width | default: 1536 }}w" sizes="(max-width: 680px) calc(100vw - 74px), (max-width: 900px) calc(100vw - 124px), 900px"{% endif %} alt="{{ include.alt | escape }}"{% if include.width and include.height %} width="{{ include.width }}" height="{{ include.height }}"{% endif %} loading="lazy">
   {% if include.ai_generated == 'true' %}<figcaption>KI-generiertes Bild</figcaption>{% elsif include.caption %}<figcaption>{{ include.caption | escape }}</figcaption>{% endif %}
 </figure>

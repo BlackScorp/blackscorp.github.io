@@ -1,0 +1,5 @@
+{% assign thumbnail_image = include.post.image_preview | default: include.post.image %}
+{% assign thumbnail_image_url = thumbnail_image %}
+{% assign thumbnail_image_first_character = thumbnail_image | slice: 0 %}
+{% unless thumbnail_image_first_character == '/' %}{% assign thumbnail_image_url = include.post.url | append: thumbnail_image %}{% endunless %}
+<img src="{{ thumbnail_image_url | relative_url }}" alt="" loading="lazy"{% if include.post.image_preview_width and include.post.image_preview_height %} width="{{ include.post.image_preview_width }}" height="{{ include.post.image_preview_height }}"{% endif %}>

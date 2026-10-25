@@ -16,7 +16,7 @@ layout: default
   <div class="blog-list">
     {% for post in tagged_articles %}
       <article class="blog-entry">
-      {% if post.image %}{% assign post_image_url = post.image %}{% assign image_first_character = post.image | slice: 0 %}{% unless image_first_character == '/' %}{% assign post_image_url = post.url | append: post.image %}{% endunless %}<a class="blog-entry-image" href="{{ post.url | relative_url }}" aria-label="{{ post.title | escape }}"><img src="{{ post_image_url | relative_url }}" alt="" loading="lazy">{% if post.image_ai_generated %}<span class="image-ai-badge" aria-hidden="true">KI-generiert</span>{% endif %}</a>{% endif %}
+      {% if post.image %}<a class="blog-entry-image" href="{{ post.url | relative_url }}" aria-label="{{ post.title | escape }}">{% include post-thumbnail.html post=post %}{% if post.image_ai_generated %}<span class="image-ai-badge" aria-hidden="true">KI-generiert</span>{% endif %}</a>{% endif %}
         <div class="blog-entry-content">
           <p class="blog-entry-meta"><time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: '%d.%m.%Y' }}</time></p>
           <h2><a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a></h2>
