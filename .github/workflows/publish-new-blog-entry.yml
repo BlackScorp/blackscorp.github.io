@@ -40,7 +40,7 @@ jobs:
             await require('./.github/scripts/publish-new-blog-entry.cjs')({ github, context, posts });
       - name: commit discussion links
         run: |
-          git add _posts _data/comments
+          git add _articles _data/comments
           if ! git diff --cached --quiet; then
             git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Link published blog posts to their GitHub discussions'
             git push origin HEAD:master

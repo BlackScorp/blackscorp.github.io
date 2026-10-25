@@ -1,0 +1,9 @@
+{% assign articles = site.articles | where: 'published', true | where_exp: 'article', 'article.date != nil' | sort: 'date' | reverse %}
+{% assign now = site.time | date: '%s' | plus: 0 %}
+{% assign visible_articles = '' | split: '' %}
+{% for article in articles %}
+  {% assign publication = article.date | date: '%s' | plus: 0 %}
+  {% if publication <= now %}{% assign visible_articles = visible_articles | push: article %}{% endif %}
+{% endfor %}
+{% assign articles = visible_articles %}
+{% assign article_tags = articles | map: 'tags' | join: ',' | split: ',' | uniq | sort %}

@@ -1,0 +1,26 @@
+---
+layout: null
+---
+<?xml version="1.0" encoding="utf-8"?>
+{% include articles.html %}{% if page.tag %}{% assign articles = articles | where: 'tags', page.tag %}{% endif %}
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="{{ site.lang }}">
+  <title>{{ site.title | xml_escape }}{% if page.tag %}: {{ page.tag | xml_escape }}{% endif %}</title>
+  <subtitle>{{ site.description | xml_escape }}</subtitle>
+  <id>{{ page.url | absolute_url | xml_escape }}</id>
+  <link href="{{ page.url | absolute_url | xml_escape }}" rel="self" type="application/atom+xml"/>
+  <link href="{{ '/blog/' | absolute_url | xml_escape }}" rel="alternate"/>
+  <updated>{{ site.time | date_to_xmlschema }}</updated>
+  <author><name>{{ site.title | xml_escape }}</name></author>
+  {% for article in articles limit:10 %}
+  <entry>
+    <title>{{ article.title | xml_escape }}</title>
+    <id>{{ article.url | absolute_url | xml_escape }}</id>
+    <link href="{{ article.url | absolute_url | xml_escape }}" rel="alternate"/>
+    <published>{{ article.date | date_to_xmlschema }}</published>
+    <updated>{{ article.last_modified_at | default: article.date | date_to_xmlschema }}</updated>
+    <summary>{{ article.description | default: article.summary | default: article.excerpt | strip_html | normalize_whitespace | xml_escape }}</summary>
+    <content type="html" xml:base="{{ article.url | absolute_url | xml_escape }}">{{ article.content | xml_escape }}</content>
+    {% for tag in article.tags %}<category term="{{ tag | xml_escape }}"/>{% endfor %}
+  </entry>
+  {% endfor %}
+</feed>

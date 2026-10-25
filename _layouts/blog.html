@@ -1,6 +1,7 @@
 ---
 layout: default
 ---
+{% include articles.html %}
 <section class="blog-page">
   <header class="page-heading">
     <p class="eyebrow">{{ page.url | escape }}</p>
@@ -9,16 +10,15 @@ layout: default
       <a class="blog-feed-icon" href="{{ '/feed.xml' | relative_url }}" type="application/atom+xml" target="_blank" rel="noopener noreferrer" aria-label="RSS-Feed abonnieren (Atom, öffnet in neuem Tab)" title="RSS-Feed abonnieren (Atom, öffnet in neuem Tab)"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="19" r="2" fill="currentColor"/><path d="M3 10a11 11 0 0 1 11 11M3 3a18 18 0 0 1 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></a>
     </div>
     <p class="lead">Meine letzten Beiträge.</p>
-    {% assign sorted_tags = site.tags | sort %}
     <ul class="post-tags" aria-label="Tags">
-      {% for tag in sorted_tags %}
-        {% assign tag_url = '/blog/tags/' | append: tag[0] | append: '/' %}
-        <li><a href="{{ tag_url | relative_url }}">{{ tag[0] | escape }} <span>({{ tag[1].size }})</span></a></li>
+      {% for tag in article_tags %}{% assign tagged_articles = articles | where: 'tags', tag %}
+        {% assign tag_url = '/blog/tags/' | append: tag | append: '/' %}
+        <li><a href="{{ tag_url | relative_url }}">{{ tag | escape }} <span>({{ tagged_articles.size }})</span></a></li>
       {% endfor %}
     </ul>
   </header>
   <div class="blog-list">
-    {% for post in site.posts %}
+    {% for post in articles %}
     <article class="blog-entry">
       {% if post.image %}<a class="blog-entry-image" href="{{ post.url | relative_url }}" aria-label="{{ post.title | escape }}"><img src="{{ post.image | relative_url }}" alt="" loading="lazy"></a>{% endif %}
       <div class="blog-entry-content">

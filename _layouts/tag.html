@@ -1,6 +1,8 @@
 ---
 layout: default
 ---
+{% include articles.html %}
+{% assign tagged_articles = articles | where: 'tags', page.tag %}
 {% assign tag_feed = '/feed/by_tag/' | append: page.tag | append: '.xml' %}
 <section class="blog-page tag-page">
   <a class="back-link" href="{{ '/blog/' | relative_url }}">← Alle Beiträge</a>
@@ -12,7 +14,7 @@ layout: default
     </div>
   </header>
   <div class="blog-list">
-    {% for post in site.tags[page.tag] %}
+    {% for post in tagged_articles %}
       <article class="blog-entry">
         {% if post.image %}<a class="blog-entry-image" href="{{ post.url | relative_url }}" aria-label="{{ post.title | escape }}"><img src="{{ post.image | relative_url }}" alt="" loading="lazy"></a>{% endif %}
         <div class="blog-entry-content">

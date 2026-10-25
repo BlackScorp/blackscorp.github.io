@@ -11,22 +11,24 @@ url: "https://blackscorp.github.io"
 repository: BlackScorp/blackscorp.github.io
 baseurl: ""
 markdown: kramdown
-permalink: /blog/:year/:month/:day/:title/
+collections:
+  articles:
+    output: true
+    permalink: /blog/:path
 plugins:
-  - jekyll-feed
   - jekyll-sitemap
-feed:
-  tags: true
 include:
   - _pages
 defaults:
   - scope:
       path: ""
-      type: posts
+      type: articles
     values:
       layout: post
+      published: false
 exclude:
   - jekyll
+  - scripts
   - Makefile
   - README.md
   - AGENTS.md

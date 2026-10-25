@@ -1,15 +1,16 @@
 ---
 layout: default
 ---
+{% include articles.html %}
 <div class="home-content">
   <p class="home-accent" aria-hidden="true"></p>
   <h1>Hallo, ich bin<br><span>{{ page.display_name | escape }}</span></h1>
   <div class="home-intro">{{ content }}</div>
-  {% if site.posts.size > 0 %}
+  {% if articles.size > 0 %}
   <section class="home-posts" aria-labelledby="home-posts-heading">
     <h2 id="home-posts-heading">Letzte Beiträge</h2>
     <div class="blog-list">
-      {% for post in site.posts limit:3 %}
+      {% for post in articles limit:3 %}
       <article class="blog-entry">
         {% if post.image %}<div class="blog-entry-image"><img src="{{ post.image | relative_url }}" alt="" loading="lazy"></div>{% endif %}
         <div class="blog-entry-content">

@@ -14,6 +14,6 @@ Sprache: {{ site.lang }}
 - [{{ entry.title | strip_html | normalize_whitespace }}]({{ entry.url | absolute_url }}){% if entry.description %}: {{ entry.description | strip_html | normalize_whitespace }}{% endif %}
 {% endif %}{% endfor %}
 ## Blogbeiträge
-{% for entry in site.posts %}{% if entry.llm != false and entry.sitemap != false %}{% assign description = entry.description | default: entry.summary | default: entry.excerpt %}
+{% include articles.html %}{% for entry in articles %}{% if entry.llm != false and entry.sitemap != false %}{% assign description = entry.description | default: entry.summary | default: entry.excerpt %}
 - [{{ entry.title | strip_html | normalize_whitespace }}]({{ entry.url | absolute_url }}): {{ description | strip_html | normalize_whitespace }}
 {% endif %}{% endfor %}

@@ -1,7 +1,7 @@
 set -euo pipefail
 
 shopt -s nullglob
-posts=(_posts/*.md _posts/*.markdown)
+posts=(_articles/[0-9]*.*/index.md _articles/[0-9]*.*/index.markdown)
 if [ "${#posts[@]}" -eq 0 ]; then
   printf '[]\n'
   exit 0
@@ -11,6 +11,16 @@ while IFS= read -r -d '' post; do
   metadata=$(awk 'NR == 1 { sub(/\r$/, ""); if ($0 != "---") exit; next } { sub(/\r$/, "") } $0 == "---" { exit } { print }' "$post")
   if ! printf '%s\n' "$metadata" | grep -Eq '^published:[[:space:]]*true[[:space:]]*(#.*)?$'; then
     continue
+  fi
+  publication_date=$(printf '%s\n' "$metadata" | sed -n 's/^date:[[:space:]]*//p' | tr -d '\"\047')
+  if [ -z "$publication_date" ]; then
+    continue
+  fi
+  if [ -n "$publication_date" ]; then
+    publication_time=$(date -d "$publication_date" +%s)
+    if [ "$publication_time" -gt "$(date +%s)" ]; then
+      continue
+    fi
   fi
   title=$(printf '%s\n' "$metadata" | sed -n 's/^title:[[:space:]]*//p')
   key=$(printf '%s\n' "$metadata" | sed -n 's/^comments_key:[[:space:]]*//p')

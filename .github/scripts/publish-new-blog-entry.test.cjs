@@ -8,8 +8,9 @@ const publish = require('./publish-new-blog-entry.cjs');
 async function fixture(run) {
   const originalDirectory = process.cwd();
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'blog-publish-'));
-  fs.mkdirSync(path.join(directory, '_posts'));
-  const post = { path: '_posts/2026-10-18-neuer-beitrag.md', title: 'Neuer Beitrag', content: 'Text mit **Markdown**\n' };
+  const articleDirectory = path.join(directory, '_articles', '1.neuer-beitrag');
+  fs.mkdirSync(articleDirectory, { recursive: true });
+  const post = { path: '_articles/1.neuer-beitrag/index.md', title: 'Neuer Beitrag', content: 'Text mit **Markdown**\n' };
   fs.writeFileSync(path.join(directory, post.path), '---\ntitle: Neuer Beitrag\npublished: true\n---\n\nText mit **Markdown**\n');
   try {
     process.chdir(directory);
@@ -49,9 +50,9 @@ test('creates a discussion with the post body, persists its link and is stable o
   await fixture(async post => {
     const github = api();
     await publish({ github, context, posts: [post] });
-    const key = '2026-10-18-neuer-beitrag';
+    const key = '1-neuer-beitrag';
     const source = fs.readFileSync(post.path, 'utf8');
-    assert.match(source, /^---\ncomments_key: 2026-10-18-neuer-beitrag\n/);
+    assert.match(source, /^---\ncomments_key: 1-neuer-beitrag\n/);
     assert.match(source, /published: true/);
     assert.deepEqual(JSON.parse(fs.readFileSync(`_data/comments/${key}.json`)), {
       discussion_number: 12, discussion_url: 'discussion-12', comments: [],
@@ -59,7 +60,7 @@ test('creates a discussion with the post body, persists its link and is stable o
     const input = github.calls.find(call => call.query.includes('createDiscussion')).variables.input;
     assert.deepEqual(input, {
       repositoryId: 'repository', categoryId: 'category', title: post.title,
-      body: 'Text mit **Markdown**\n\n---\n\nBlog-ID: `2026-10-18-neuer-beitrag`\n',
+      body: 'Text mit **Markdown**\n\n---\n\nBlog-ID: `1-neuer-beitrag`\n',
     });
     github.calls.length = 0;
     await publish({ github, context, posts: [{ ...post, comments_key: key }] });
@@ -75,13 +76,13 @@ test('recovers a discussion created before an interrupted commit, including late
     github.graphql = async (query, variables) => {
       if (!query.includes('discussions(first:')) return graphql(query, variables);
       return { repository: { discussions: {
-        nodes: variables.cursor ? [{ number: 7, url: 'recovered', body: 'Text\nBlog-ID: `2026-10-18-neuer-beitrag`\n' }] : [],
+        nodes: variables.cursor ? [{ number: 7, url: 'recovered', body: 'Text\nBlog-ID: `1-neuer-beitrag`\n' }] : [],
         pageInfo: { hasNextPage: !variables.cursor, endCursor: 'next' },
       } } };
     };
     await publish({ github, context, posts: [post] });
     assert.equal(github.calls.some(call => call.query.includes('createDiscussion')), false);
-    assert.equal(JSON.parse(fs.readFileSync('_data/comments/2026-10-18-neuer-beitrag.json')).discussion_number, 7);
+    assert.equal(JSON.parse(fs.readFileSync('_data/comments/1-neuer-beitrag.json')).discussion_number, 7);
   });
 });
 
@@ -89,12 +90,12 @@ test('preserves existing mappings and comments, repairs missing keys and keeps C
   await fixture(async post => {
     fs.mkdirSync('_data/comments', { recursive: true });
     const data = JSON.stringify({ discussion_number: 1, comments: [{ body: 'Existing comment' }] });
-    fs.writeFileSync('_data/comments/2026-10-18-neuer-beitrag.json', data);
+    fs.writeFileSync('_data/comments/1-neuer-beitrag.json', data);
     fs.writeFileSync(post.path, fs.readFileSync(post.path, 'utf8').replaceAll('\n', '\r\n'));
     const github = api();
     await publish({ github, context, posts: [post] });
     assert.deepEqual(github.calls, []);
-    assert.equal(fs.readFileSync('_data/comments/2026-10-18-neuer-beitrag.json', 'utf8'), data);
+    assert.equal(fs.readFileSync('_data/comments/1-neuer-beitrag.json', 'utf8'), data);
     assert.match(fs.readFileSync(post.path, 'utf8'), /^---\r\ncomments_key: [\w-]+\r\n/);
   });
 });
@@ -117,7 +118,7 @@ test('rejects invalid and duplicate keys, missing categories and ambiguous discu
     await assert.rejects(publish({ github, context, posts: [{ ...post, comments_key: '../bad' }] }), /Invalid or duplicate/);
     await assert.rejects(publish({ github, context, posts: [post, post] }), /Invalid or duplicate/);
     await assert.rejects(publish({ github, context, posts: [post], categoryName: 'Missing' }), /category not found/);
-    const existing = { number: 1, url: 'duplicate', body: 'Blog-ID: `2026-10-18-neuer-beitrag`' };
+    const existing = { number: 1, url: 'duplicate', body: 'Blog-ID: `1-neuer-beitrag`' };
     await assert.rejects(publish({ github: api([existing, existing]), context, posts: [post] }), /Multiple discussions/);
     assert.equal(fs.existsSync('_data/comments'), false);
   });

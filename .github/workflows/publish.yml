@@ -49,11 +49,18 @@ jobs:
           fi
       - name: configure
         uses: actions/configure-pages@v5
-      - name: build
-        uses: actions/jekyll-build-pages@v1
+      - name: ruby
+        uses: ruby/setup-ruby@v1
         with:
-          source: ./
-          destination: ./_site
+          ruby-version: '3.3.4'
+          bundler-cache: true
+        env:
+          BUNDLE_GEMFILE: jekyll/Gemfile
+      - name: build
+        run: bundle exec jekyll build --destination ./_site
+        env:
+          BUNDLE_GEMFILE: jekyll/Gemfile
+          JEKYLL_ENV: production
       - name: upload
         uses: actions/upload-pages-artifact@v3
       - name: deploy

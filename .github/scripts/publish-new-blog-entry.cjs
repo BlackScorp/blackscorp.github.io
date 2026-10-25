@@ -5,10 +5,11 @@ module.exports = async ({ github, context, posts, categoryName = 'Blog' }) => {
   const directory = path.join(process.cwd(), '_data', 'comments');
   const keys = new Set();
   const candidates = posts.map(post => {
-    if (!/^_posts\/[\w-]+\.(md|markdown)$/.test(post.path)) {
-      throw new Error(`Invalid post path: ${post.path}`);
+    if (!/^_articles\/\d+\.[a-z0-9]+(?:-[a-z0-9]+)*\/index\.(?:md|markdown)$/.test(post.path)) {
+      throw new Error(`Invalid article path: ${post.path}`);
     }
-    const key = post.comments_key ?? path.basename(post.path).replace(/\.(md|markdown)$/, '');
+    const folder = path.basename(path.dirname(post.path));
+    const key = post.comments_key ?? folder.replace('.', '-');
     if (typeof key !== 'string' || !/^[\w-]+$/.test(key) || keys.has(key)) {
       throw new Error(`Invalid or duplicate comments_key: ${key}`);
     }

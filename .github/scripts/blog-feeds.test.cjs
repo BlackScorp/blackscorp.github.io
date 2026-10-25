@@ -6,9 +6,9 @@ const test = require('node:test');
 const root = path.resolve(__dirname, '../..');
 const preview = process.env.BLOG_PREVIEW_URL;
 
-function postTags() {
-  return readdirSync(path.join(root, '_posts')).filter((filename) => /\.(md|markdown)$/.test(filename)).flatMap((filename) => {
-    const source = readFileSync(path.join(root, '_posts', filename), 'utf8');
+function articleTags() {
+  return readdirSync(path.join(root, '_articles'), { recursive: true }).filter((filename) => /\.(md|markdown)$/.test(filename)).flatMap((filename) => {
+    const source = readFileSync(path.join(root, '_articles', filename), 'utf8');
     const frontMatter = source.match(/^---\r?\n([\s\S]*?)\r?\n---/);
     assert.ok(frontMatter, `${filename}: Front Matter fehlt`);
     const tags = frontMatter[1].match(/^tags:\s*\[([^\]\r\n]*)\]\s*$/m);
@@ -20,16 +20,16 @@ function postTags() {
   });
 }
 
-test('all post tags support automatically generated feeds', () => {
-  for (const tag of postTags()) {
+test('all article tags have a page and support generated feeds', () => {
+  for (const tag of articleTags()) {
     assert.match(tag, /^[a-zA-Z0-9_]+$/, `Nicht unterstützter Feed-Tag: ${tag}`);
     const page = readFileSync(path.join(root, '_pages/tags', `${tag}.md`), 'utf8');
     assert.ok(page.includes(`tag: ${tag}\n`));
     assert.ok(page.includes(`permalink: /blog/tags/${tag}/\n`));
   }
   const config = readFileSync(path.join(root, '_config.yml'), 'utf8');
-  assert.match(config, /plugins:\s*\n\s+- jekyll-feed/);
-  assert.match(config, /feed:\s*\n\s+tags: true/);
+  assert.match(config, /collections:\s*\n\s+articles:/);
+  assert.match(config, /permalink:\s*\/blog\/:path/);
 });
 
 test('preview exposes the general feed, tag feeds and navigation', { skip: !preview }, async () => {
@@ -46,13 +46,13 @@ test('preview exposes the general feed, tag feeds and navigation', { skip: !prev
   assert.match(blog, /<link[^>]+type="application\/atom\+xml"[^>]+href="[^"]*\/feed.xml"/);
   assert.match(blog, /class="blog-feed-icon" href="\/feed.xml"[^>]+target="_blank" rel="noopener noreferrer"[^>]+aria-label="[^"]*öffnet in neuem Tab/);
   assert.doesNotMatch(blog, /Alle Tags|RSS-Feed: alle Beiträge/);
-  for (const tag of new Set(postTags())) {
+  for (const tag of new Set(articleTags())) {
     assert.ok(blog.includes(`href="/blog/tags/${encodeURIComponent(tag)}/"`));
   }
   const overview = await get('/blog/tags/');
   const stylesheet = await get('/assets/css/site.css');
   assert.doesNotMatch(stylesheet, /\.tag-section:target/);
-  for (const tag of new Set(postTags())) {
+  for (const tag of new Set(articleTags())) {
     assert.ok(overview.includes(`href="/blog/tags/${tag}/"`));
     const page = await get(`/blog/tags/${tag}/`);
     assert.match(page, new RegExp(`<h1>${tag}</h1>`));
@@ -67,7 +67,7 @@ test('preview exposes the general feed, tag feeds and navigation', { skip: !prev
   assert.doesNotMatch(generalFeed, /<html/);
   assert.match(generalFeed, /<link[^>]+href="https?:\/\//);
 
-  for (const tag of new Set(postTags())) {
+  for (const tag of new Set(articleTags())) {
     const feedPath = `/feed/by_tag/${tag}.xml`;
     const feed = await get(feedPath);
     assert.match(feed, /<feed[^>]+xmlns="http:\/\/www.w3.org\/2005\/Atom"/);

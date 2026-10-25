@@ -1,6 +1,6 @@
 # Projekt: BlackScorp Webseite und Blog
 
-Diese persönliche Webseite mit CV, Projekten, Kontaktseite und Blog wird mit Jekyll gebaut und über GitHub Pages veröffentlicht. Inhalte stehen in Markdown (Seiten unter `_pages/`, Blogbeiträge unter `_posts/`), gemeinsame HTML-Strukturen in `_layouts/` und Styles in `assets/css/site.scss`. `_pages/` wird über `include` in `_config.yml` eingebunden; Seiten erhalten ihre öffentliche URL über ein explizites `permalink` im Front Matter. Projektunterseiten liegen unter `_pages/projects/`.
+Diese persönliche Webseite mit CV, Projekten, Kontaktseite und Blog wird mit Jekyll gebaut und über GitHub Pages veröffentlicht. Inhalte stehen in Markdown (Seiten unter `_pages/`, Blogbeiträge in der Collection `_articles/`), gemeinsame HTML-Strukturen in `_layouts/` und Styles in `assets/css/site.scss`. `_pages/` wird über `include` in `_config.yml` eingebunden; Seiten und Beiträge erhalten ihre öffentliche URL über ein explizites `permalink` im Front Matter. Projektunterseiten liegen unter `_pages/projects/`.
 
 ## Lokale Entwicklung
 
@@ -10,9 +10,16 @@ Diese persönliche Webseite mit CV, Projekten, Kontaktseite und Blog wird mit Je
 - Layoutänderungen nach Möglichkeit in der Vorschau auf Desktop- und Mobilbreite prüfen.
 - Die Kommentarsynchronisierung mit `node --test .github/scripts/sync-comments.test.cjs` prüfen. Der Workflow `.github/workflows/publish.yml` synchronisiert Discussion-Kommentare und Antworten, committet Änderungen und veröffentlicht die Website über GitHub Actions. Die Zuordnung erfolgt über `comments_key` im Beitrag und `discussion_number` in `_data/comments/*.json`.
 
+## Blogbeiträge
+
+- Neue Beiträge mit `make new TITLE="Mein Beitrag"` als `_articles/NUM.linktitel/index.md` anlegen. Die Vorlage liegt unter `jekyll/article-template.md`; `make help` zeigt die verfügbaren Befehle.
+- Jeder Beitrag setzt sein `permalink` explizit auf `/blog/linktitel/`. `published: true` und ein explizites `date` veröffentlichen ihn; zukünftige Daten bleiben zunächst verborgen.
+- Beitragsbilder dürfen neben `index.md` oder in Unterordnern liegen. Relative Markdown-Bildlinks und `image: bild.png` werden unterstützt.
+- Actions baut mit `bundle exec jekyll build` und `BUNDLE_GEMFILE=jekyll/Gemfile`.
+
 ## Tags und Feeds
 
-- Tags als Inline-Liste im Front Matter pflegen, beispielsweise `tags: [php, jekyll]`. Für die automatische Erzeugung durch `jekyll-feed` nur Buchstaben, Ziffern und Unterstriche verwenden, vorzugsweise kleingeschrieben.
+- Tags als Inline-Liste im Front Matter pflegen, beispielsweise `tags: [php, jekyll]`. Für Tagseiten und Feeds nur Buchstaben, Ziffern und Unterstriche verwenden, vorzugsweise kleingeschrieben.
 - Jeder Tag besitzt eine eigene Quelldatei `_pages/tags/TAG.md` mit `layout: tag`, `title: TAG`, `tag: TAG` und `permalink: /blog/tags/TAG/`. Das gemeinsame Layout filtert beim Build, nicht im Browser. Neue Tags benötigen eine solche Seite; die Tests prüfen die Zuordnung.
 - Die Themenübersicht liegt unter `/blog/tags/`, einzelne Tagseiten unter `/blog/tags/TAG/`, der allgemeine Atom-Feed unter `/feed.xml` und Tagfeeds unter `/feed/by_tag/TAG.xml`. Atom wird von RSS-Readern unterstützt.
 - Alle Skripttests mit `node --test .github/scripts/*.test.cjs` ausführen. Mit laufender Docker-Vorschau zusätzlich `BLOG_PREVIEW_URL=http://localhost:4000 node --test .github/scripts/*.test.cjs` verwenden, damit auch die generierten Feedlinks, Tagfilterung und Feed-Autodiscovery geprüft werden.

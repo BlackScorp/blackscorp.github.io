@@ -14,7 +14,8 @@ test('discovery files are generated from Jekyll content', () => {
   assert.match(template, /^permalink: \/llm.txt$/m);
   assert.match(template, /^sitemap: false$/m);
   assert.match(template, /site.pages/);
-  assert.match(template, /site.posts/);
+  assert.match(template, /include articles\.html/);
+  assert.match(template, /for entry in articles/);
   assert.match(template, /absolute_url/);
 });
 
