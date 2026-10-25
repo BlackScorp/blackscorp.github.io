@@ -8,9 +8,11 @@ help: ## Verfügbare Befehle anzeigen
 start: ## Lokale Vorschau starten
 	cd jekyll && docker compose up -d
 
-test: ## Tests im Jekyll-Container ausführen
+test: ## Tests im eigenen Node-Container ausführen
 	@output=$$(mktemp); errors=$$(mktemp); \
-	if docker compose -f jekyll/docker-compose.yaml exec -T -e BLOG_PREVIEW_URL=http://127.0.0.1:4000 jekyll node --test --test-reporter=spec .github/scripts/*.test.cjs > "$$output" 2>&1; then \
+	if { docker build -q -f jekyll/Node.Dockerfile -t blog-tests . && \
+		docker run --rm --network host -e BLOG_PREVIEW_URL=http://127.0.0.1:4000 -v "$(CURDIR):/site" blog-tests node --test --test-reporter=spec .github/scripts/*.test.cjs; \
+	} > "$$output" 2>&1; then \
 		tests=$$(awk '$$2 == "tests" { print $$3 }' "$$output"); \
 		printf '%s Tests erfolgreich.\n' "$$tests"; \
 		rm -f "$$output" "$$errors"; \

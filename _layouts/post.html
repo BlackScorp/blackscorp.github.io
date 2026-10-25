@@ -4,7 +4,7 @@ layout: default
 <article class="page-content post-content">
   <a class="back-link" href="{{ '/blog/' | relative_url }}">← Alle Beiträge</a>
   <header class="page-heading">
-    <p class="eyebrow">/blog/{{ page.date | date: '%Y' }}</p>
+    <p class="eyebrow">{{ page.permalink | default: page.url | escape }}</p>
     <h1>{{ page.title | escape }}</h1>
     <p class="post-meta"><time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: '%d.%m.%Y' }}</time>{% if page.categories.size > 0 %} · {{ page.categories | join: ', ' }}{% endif %}{% if page.sample %} · Beispielbeitrag{% endif %}</p>
     {% include post-tags.html tags=page.tags %}

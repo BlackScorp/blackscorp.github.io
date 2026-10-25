@@ -8,7 +8,7 @@ Die Seite wird mit Jekyll gebaut. Lokal verwendet Docker Compose das gleiche `gi
 make start
 ```
 
-Dockerfile, Gemfile, Lockdatei und `docker-compose.yaml` liegen unter `jekyll/`. `make start` wechselt dorthin und führt `docker compose up -d` aus. Danach ist die Seite unter <http://localhost:4000> erreichbar. Änderungen an Seiten und Beiträgen werden automatisch neu gebaut. Stoppen mit `docker compose -f jekyll/docker-compose.yaml down`; nach Änderungen am Dockerfile oder den Gems mit `docker compose -f jekyll/docker-compose.yaml up -d --build` neu bauen. Nach Änderungen an `_config.yml` mit `docker compose -f jekyll/docker-compose.yaml restart jekyll` neu starten.
+Dockerfile, Gemfile, Lockdatei und `docker-compose.yaml` liegen unter `jekyll/`. `make start` wechselt dorthin und führt `docker compose up -d` aus. Danach ist die Seite unter <http://localhost:4000> erreichbar. Änderungen an Seiten und Beiträgen werden automatisch neu gebaut. Stoppen mit `docker compose -f jekyll/docker-compose.yaml down`; nach Änderungen am Dockerfile oder den Gems mit `docker compose -f jekyll/docker-compose.yaml up -d --build` neu bauen. Nach Änderungen an `_config.yml` mit `docker compose -f jekyll/docker-compose.yaml restart jekyll` neu starten. `make test` baut einen separaten Node.js-Testcontainer aus `jekyll/Node.Dockerfile`; Node.js und die Testwerkzeuge werden nicht im Jekyll-Container installiert.
 
 Den lokalen Port in `jekyll/docker-compose.yaml` unter `ports` ändern: `127.0.0.1:8080:4000` stellt die Vorschau beispielsweise auf Port 8080 bereit. Der rechte Port bleibt der interne Jekyll-Port, der über `command` in derselben Datei gesetzt wird. `EXPOSE` ist dafür nicht nötig und veröffentlicht selbst keinen Port. Nach Portänderungen erneut `make start` ausführen.
 
@@ -44,11 +44,7 @@ Tags im Front Matter eines Beitrags als Liste ergänzen, zum Beispiel `tags: [ph
 
 Die Blogübersicht und Beiträge verlinken auf die Themenübersicht unter `/blog/tags/`. Dort stehen pro Tag die zugehörigen Beiträge und ein eigener Feed. `/feed.xml` enthält die neuesten Beiträge insgesamt, `/feed/by_tag/php.xml` beispielsweise nur Beiträge mit dem Tag `php`. Die Feed-Layouts erzeugen bis zu zehn Beiträge im Atom-Format, das übliche RSS-Reader unterstützen. Der allgemeine Feed wird über einen Link im HTML-Head automatisch erkannt.
 
-Die laufende Vorschau einschließlich Feedlinks und Tagfilterung testen:
-
-```sh
-BLOG_PREVIEW_URL=http://localhost:4000 node --test .github/scripts/blog-feeds.test.cjs
-```
+Die laufende Vorschau einschließlich Feedlinks und Tagfilterung mit `make test` testen.
 
 ## Kommentare und Veröffentlichung
 
@@ -62,11 +58,7 @@ GitHub Pages muss in den Repository-Einstellungen als Quelle **GitHub Actions** 
 
 `_layouts/post.html` und `_includes/comment.html` zeigen Kommentare und Antworten als HTML-escaped Klartext mit Profilbildern an. Die Synchronisierung übernimmt nur die öffentliche GitHub-Avatar-URL; der Browser lädt das Profilbild direkt von GitHub. Bilddateien werden weder gespeichert noch committet. Initialen dienen als Fallback für Accounts ohne Profilbild. Der Zähler umfasst Kommentare und Antworten. GitHub-Anmeldung ist nur zum Schreiben auf GitHub erforderlich; die Blogseite lädt keine GitHub-Skripte. Der Discussion-Link öffnet einen neuen Tab.
 
-Synchronisierung testen:
-
-```sh
-node --test .github/scripts/*.test.cjs
-```
+Synchronisierung und alle übrigen Skripte mit `make test` testen.
 
 Der Actions-Build verwendet wie die Vorschau `bundle exec jekyll build` mit `jekyll/Gemfile`.
 
