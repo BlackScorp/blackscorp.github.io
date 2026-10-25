@@ -1,5 +1,5 @@
 const assert = require('node:assert/strict');
-const { readFileSync, readdirSync } = require('node:fs');
+const { existsSync, readFileSync, readdirSync } = require('node:fs');
 const path = require('node:path');
 const test = require('node:test');
 
@@ -19,6 +19,17 @@ function articleTags() {
     return tags[1].split(',').map((tag) => tag.trim().replace(/^['"]|['"]$/g, '')).filter(Boolean);
   });
 }
+
+test('blog posts support Mermaid diagrams from local assets', () => {
+  const layout = readFileSync(path.join(root, '_layouts/post.html'), 'utf8');
+  const initializer = readFileSync(path.join(root, 'assets/js/mermaid-init.js'), 'utf8');
+
+  assert.ok(existsSync(path.join(root, 'assets/js/mermaid.min.js')));
+  assert.match(layout, /assets\/js\/mermaid\.min\.js/);
+  assert.match(layout, /assets\/js\/mermaid-init\.js/);
+  assert.match(initializer, /code\.language-mermaid/);
+  assert.match(initializer, /securityLevel: 'strict'/);
+});
 
 test('all article tags have a page and support generated feeds', () => {
   for (const tag of articleTags()) {

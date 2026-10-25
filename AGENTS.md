@@ -16,6 +16,7 @@ Diese persönliche Webseite mit CV, Projekten, Kontaktseite und Blog wird mit Je
 - Neue Beiträge mit `make new TITLE="Mein Beitrag"` als `_articles/NUM.linktitel/index.md` anlegen. Die Vorlage liegt unter `jekyll/article-template.md`; `make help` zeigt die verfügbaren Befehle.
 - Jeder Beitrag setzt sein `permalink` explizit auf `/blog/linktitel/`. `published: true` und ein explizites `date` veröffentlichen ihn; zukünftige Daten bleiben zunächst verborgen.
 - Beitragsbilder dürfen neben `index.md` oder in Unterordnern liegen. Relative Markdown-Bildlinks und `image: bild.png` werden unterstützt.
+- Mermaid-Diagramme in Beiträgen als Markdown-Codeblock mit der Sprache `mermaid` schreiben. Die Darstellung erfolgt im Browser über die lokalen Dateien unter `assets/js/`; keine externen Mermaid-Skripte einbinden.
 - Actions baut mit `bundle exec jekyll build` und `BUNDLE_GEMFILE=jekyll/Gemfile`.
 
 ## Tags und Feeds

@@ -86,6 +86,8 @@ h1, h2, h3, p { margin-top: 0; }
 .prose a { color: $accent; text-decoration: underline; text-underline-offset: 3px; }
 .prose code { color: #f1be68; font: .9em "Noto Sans Mono",monospace; }
 .prose pre { overflow: auto; padding: 18px; border: 1px solid $line; border-radius: 5px; background: #1b1c1e; line-height: 1.6; code { color: #dededc; } }
+.prose .mermaid { margin-bottom: 1.3rem; overflow-x: auto; text-align: center; }
+.prose .mermaid svg { max-width: 100%; height: auto; }
 .prose .highlight {
   .c, .ch, .cd, .cm, .c1, .cp, .cpf, .cs { color: #a7a7aa; }
   .k, .kc, .kd, .kn, .kp, .kr, .kt, .kv, .ow { color: #c6a0f6; }
