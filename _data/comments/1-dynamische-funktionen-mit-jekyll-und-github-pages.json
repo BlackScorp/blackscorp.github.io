@@ -1,5 +1,19 @@
 {
   "discussion_number": 2,
   "discussion_url": "https://github.com/BlackScorp/blackscorp.github.io/discussions/2",
-  "comments": []
+  "comments": [
+    {
+      "id": "DC_kwDOEtjoKc4BJKh2",
+      "author": "BlackScorp",
+      "initials": "BL",
+      "avatar": "https://avatars.githubusercontent.com/u/765140?s=72&v=4",
+      "author_url": "https://github.com/BlackScorp",
+      "url": "https://github.com/BlackScorp/blackscorp.github.io/discussions/2#discussioncomment-19179638",
+      "body_html": "<p dir=\"auto\">Das ist ein Test Kommentar um zu zeigen, dass es auch funktioniert.</p>",
+      "is_author": true,
+      "date": "2026-10-25T14:54:31Z",
+      "body": "Das ist ein Test Kommentar um zu zeigen, dass es auch funktioniert.",
+      "replies": []
+    }
+  ]
 }
