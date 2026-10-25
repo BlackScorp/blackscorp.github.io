@@ -12,7 +12,7 @@ $panel-glow: radial-gradient(circle at 100% 0, rgba(229,161,46,.12), transparent
 
 @font-face { font-family: "Noto Sans"; src: url("../fonts/noto-sans-latin.woff2") format("woff2"); font-style: normal; font-weight: 400 700; font-display: swap; }
 @font-face { font-family: "Noto Sans Mono"; src: url("../fonts/noto-sans-mono-latin.woff2") format("woff2"); font-style: normal; font-weight: 400 700; font-display: swap; }
-@font-face { font-family: "Ionicons"; src: url("../fonts/ionicons.woff") format("woff"); font-style: normal; font-weight: normal; font-display: block; }
+@font-face { font-family: "Ionicons"; src: url("../fonts/ionicons.woff") format("woff"); font-style: normal; font-weight: normal; font-display: swap; }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scrollbar-color: $accent $outside; }
 body { display: grid; place-items: center; min-height: 100dvh; margin: 0; padding: 40px 24px; background: radial-gradient(ellipse at 50% 45%, #242629 0, $outside 65%); color: $text; font: 400 15px/1.7 "Noto Sans", sans-serif; }

@@ -14,7 +14,7 @@ layout: default
     {% assign image_first_character = page.image | slice: 0 %}
     {% unless image_first_character == '/' %}{% assign post_image_url = page.url | append: page.image %}{% endunless %}
     <figure class="post-image-figure">
-      <img class="post-hero-image" src="{{ post_image_url | relative_url }}" alt="{{ page.image_alt | escape }}">
+      <img class="post-hero-image" src="{{ post_image_url | relative_url }}" alt="{{ page.image_alt | escape }}" width="1536" height="1024" fetchpriority="high">
       {% if page.image_ai_generated %}<figcaption>KI-generiertes Bild</figcaption>{% elsif page.image_caption %}<figcaption>{{ page.image_caption | escape }}</figcaption>{% endif %}
     </figure>
   {% endif %}
