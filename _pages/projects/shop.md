@@ -9,6 +9,7 @@ description: PHP-Online-Shop als Lernprojekt mit Code und Video-Playlist.
 summary: Schritt für Schritt einen Online Shop mit PHP aufbauen – mit Video-Serie und Quellcode.
 lead: Eine Video-Serie zum Aufbau eines PHP-Projekts.
 image: /assets/images/videos/php-shop-playlist.jpg
+mermaid: false
 shop_playlist_id: PLz858EFEcxiElOUr7b3Pql1CMHuVRYkTh
 shop_playlist_title: PHP Online Shop programmieren
 ---

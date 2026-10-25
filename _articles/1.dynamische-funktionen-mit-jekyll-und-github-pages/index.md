@@ -9,6 +9,7 @@ description: "Ein Blog mit Jekyll und GitHub Pages muss nicht auf Kommentare ver
 image: jekyll-github-pages-blog.webp
 image_alt: "Eine Markdown-Seite wird über Git in eine Website übertragen"
 image_ai_generated: true
+mermaid: false
 tags: [github_pages, jekyll, docker, github_actions, bloggen]
 keywords: [dynamische Funktionen statische Website, Jekyll Blog, GitHub Pages, GitHub Actions, GitHub Discussions, Blog Kommentare]
 ---
