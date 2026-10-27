@@ -1,0 +1,6 @@
+interface:
+  display_name: "Article Front Matter"
+  short_description: "Maintain article titles, slugs, SEO metadata, tags, and Mermaid"
+  default_prompt: "Use $article-frontmatter to review and update this article's Front Matter."
+policy:
+  allow_implicit_invocation: false
