@@ -1,4 +1,5 @@
 ---
+comments_key: 2-erstes-spiel-mit-godot-roguelike-prototyp
 title: "Mein erstes Spiel mit Godot: Roguelike-Idee und erster Prototyp"
 published: true
 date: 2026-10-27
