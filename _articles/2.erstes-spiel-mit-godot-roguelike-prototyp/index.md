@@ -1,6 +1,7 @@
 ---
 title: "Mein erstes Spiel mit Godot: Roguelike-Idee und erster Prototyp"
 published: true
+date: 2026-10-27
 permalink: /blog/erstes-spiel-mit-godot-roguelike-prototyp/
 summary: "Ich stelle mein Spieleprojekt vor und zeige den ersten spielbaren Prototyp: eine Roguelike-Idee mit Godot."
 description: "Ich entwickle mein erstes Spiel mit Godot: eine Roguelike-Idee mit Kampfinstanz, Gegnern und einem ersten spielbaren Prototyp."
