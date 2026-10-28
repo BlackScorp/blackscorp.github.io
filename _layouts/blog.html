@@ -25,7 +25,21 @@ layout: default
         <p class="blog-entry-meta"><time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: '%d.%m.%Y' }}</time>{% if post.sample %}<span>Beispiel</span>{% endif %}</p>
         <h2><a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a></h2>
         {% include post-tags.html tags=post.tags %}
-        <p>{{ post.summary | default: post.excerpt | strip_html | truncate: 130 }}</p>
+        <p class="blog-entry-summary">{{ post.summary | default: post.excerpt | strip_html | truncate: 130 }}</p>
+        {% if post.comments_key %}
+          {% assign discussion = site.data.comments[post.comments_key] %}
+          {% assign comment_count = 0 %}
+          {% if discussion %}
+            {% assign comment_count = discussion.comments.size | default: 0 %}
+            {% for comment in discussion.comments %}
+              {% assign comment_count = comment_count | plus: comment.replies.size %}
+            {% endfor %}
+          {% endif %}
+          <a class="blog-entry-comments" href="{{ post.url | relative_url }}#comments-heading" title="Anzahl Kommentare" aria-label="Anzahl Kommentare: {{ comment_count }}">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H6l-3 2v-6.5A7.5 7.5 0 1 1 20 11.5Z"/><path d="M8 11.5h.01M12 11.5h.01M16 11.5h.01"/></svg>
+            <span>{{ comment_count }}</span>
+          </a>
+        {% endif %}
       </div>
     </article>
     {% endfor %}

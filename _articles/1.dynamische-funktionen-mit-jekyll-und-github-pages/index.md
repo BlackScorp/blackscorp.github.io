@@ -52,7 +52,7 @@ Bevor ich überhaupt loslegen kann, muss ich ja irgendwie eine Vorschau lokal ha
 Deshalb habe ich mir als Erstes ein Dockerfile mit Jekyll gebaut.
 
 ```Dockerfile
-FROM ruby:3.3.4
+FROM ruby:3.3
 
 WORKDIR /site
 

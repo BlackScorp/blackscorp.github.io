@@ -7,7 +7,6 @@ layout: default
     <p class="eyebrow">{{ page.permalink | default: page.url | escape }}</p>
     <h1>{{ page.title | escape }}</h1>
     <p class="post-meta"><time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: '%d.%m.%Y' }}</time>{% if page.categories.size > 0 %} · {{ page.categories | join: ', ' }}{% endif %}{% if page.sample %} · Beispielbeitrag{% endif %}</p>
-    {% include post-tags.html tags=page.tags %}
   </header>
   {% if page.image %}
     {% assign post_image_url = page.image %}
@@ -21,6 +20,7 @@ layout: default
     </figure>
   {% endif %}
   <div class="prose">{{ content }}</div>
+  {% include post-tags.html tags=page.tags %}
   {% if page.comments_key %}
     {% assign discussion = site.data.comments[page.comments_key] %}
     {% if discussion %}
@@ -73,4 +73,7 @@ layout: default
 {% if page.mermaid == true %}
 <script src="{{ '/assets/js/mermaid.min.js' | relative_url }}" defer></script>
 <script src="{{ '/assets/js/mermaid-init.js' | relative_url }}" defer></script>
+{% endif %}
+{% if page.model_viewer == true %}
+<script type="module" src="{{ '/assets/js/model-viewer.min.js' | relative_url }}"></script>
 {% endif %}
