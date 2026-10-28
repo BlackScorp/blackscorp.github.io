@@ -1,4 +1,5 @@
 ---
+comments_key: 3-loot-und-inventar-in-godot-ui-mit-eigenen-szenen-umsetzen
 title: "Loot und Inventar in Godot: UI mit eigenen Szenen umsetzen"
 published: true
 date: 2026-10-28
