@@ -15,7 +15,7 @@ image_ai_generated: true
 model_viewer: true
 permalink: /blog/2d-zu-3d-ist-schwieriger-als-man-denkt/
 summary: "Heute habe ich ein Mecha-Konzept entwickelt und versucht, daraus mit Visual Hull ein 3D-Modell zu erstellen. Das Ergebnis hat mir gezeigt, dass der Schritt von 2D zu 3D schwieriger ist als gedacht."
-keywords: [Mecha Konzept, 2D zu 3D, Blender, Visual Hull, KI-generierte Bilder, 3D-Modell für Spiele]
+keywords: [Mecha Konzept, 2D zu 3D, Blender, Blender MCP, Blender MCP Server, Visual Hull, KI-generierte Bilder, 3D-Modell für Spiele]
 tags: [gamedev, rpg, blender, 3d, ki]
 ---
 
@@ -48,7 +48,14 @@ Das Ergebnis sah dann überhaupt nicht gut aus
 {% assign model_url = page.url | append: 'visual-hull.glb' | relative_url %}
 <model-viewer src="{{ model_url }}" alt="Grobes, graues 3D-Blockout des Mechas mit kantigem Körper und einfachen Gliedmaßen" camera-controls camera-orbit="0deg 75deg 3m" min-camera-orbit="auto 0deg auto" max-camera-orbit="auto 180deg auto" shadow-intensity="1" exposure="1"></model-viewer>
 
-Es gibt also schon ein Grund wieso die Anbieter für 3D Modelle, Geld verlangen. Das Thema habe ich mir einfacher vorgestellt. Ich glaube aber, dass ich da erstmal nicht die Zeit investieren will. Ich habe ja das Bild von allen seiten. Ich werde mich da selbst an Blender setzen und die Figur als nächstes erstellen.
+Es gibt also schon ein Grund wieso die Anbieter für 3D Modelle, Geld verlangen. Das Thema habe ich mir einfacher vorgestellt.
+
+Blender hat ja auch einen MCP-Server. Damit kann eine KI ebenfalls Modelle erstellen. Das habe ich natürlich ausprobiert, und dabei ist Folgendes herausgekommen:
+
+{% assign blender_mcp_url = page.url | append: 'blender-mcp.glb' | relative_url %}
+<model-viewer src="{{ blender_mcp_url }}" alt="Mit Blender MCP erstelltes 3D-Modell des Mechas" camera-controls camera-orbit="0deg 75deg 3m" min-camera-orbit="auto 0deg auto" max-camera-orbit="auto 180deg auto" shadow-intensity="1" exposure="1"></model-viewer>
+
+Ich glaube aber, dass ich da erst einmal keine Zeit investieren will. Ich habe ja das Bild aus allen Seitenansichten. Als Nächstes werde ich mich selbst an Blender setzen und die Figur erstellen.
 
 Ich habe früher schon mit Blender experementiert und ein paar Tutorials abgearbeitet, mal sehen ob ich mich noch an alles erinnern kann und ob der Skill wie mit Fahrradfahren ist.
 
