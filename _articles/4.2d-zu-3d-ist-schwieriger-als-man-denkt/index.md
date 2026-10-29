@@ -1,4 +1,5 @@
 ---
+comments_key: 4-2d-zu-3d-ist-schwieriger-als-man-denkt
 title: "2D zu 3D ist schwieriger, als man denkt"
 published: true
 date: 2026-10-29
