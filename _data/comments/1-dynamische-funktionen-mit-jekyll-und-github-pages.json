@@ -13,20 +13,7 @@
       "is_author": true,
       "date": "2026-10-25T14:54:31Z",
       "body": "Das ist ein Test Kommentar um zu zeigen, dass es auch funktioniert.",
-      "replies": [
-        {
-          "id": "DC_kwDOEtjoKc4BJf3Q",
-          "author": "Q-uock",
-          "initials": "Q-",
-          "avatar": "https://avatars.githubusercontent.com/u/144137704?s=72&u=470f3869a0c0729b3768bfdc287ec6576bb14f6b&v=4",
-          "author_url": "https://github.com/Q-uock",
-          "url": "https://github.com/BlackScorp/blackscorp.github.io/discussions/2#discussioncomment-19267024",
-          "body_html": "<p dir=\"auto\">test</p>",
-          "is_author": false,
-          "date": "2026-10-29T12:24:47Z",
-          "body": "test"
-        }
-      ]
+      "replies": []
     }
   ]
 }
