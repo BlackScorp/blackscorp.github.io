@@ -8,7 +8,8 @@
 
 - Vorschau läuft in Docker unter `http://localhost:4000`. Erst `docker compose -f jekyll/docker-compose.yaml ps` prüfen; nur bei Bedarf mit `make start` starten.
 - Änderungen werden automatisch gebaut. Nach `_config.yml`-Änderungen `docker compose -f jekyll/docker-compose.yaml restart jekyll` ausführen.
-- Tests: `make test`. Jekyll-Befehle bei Bedarf im laufenden Container mit `docker compose -f jekyll/docker-compose.yaml exec jekyll ...` ausführen.
+- Tests: `make test` läuft nur in der Pipeline (GitHub Actions). Bei normalen Blog-Änderungen wie neuen Beiträgen muss `make test` nicht ausgeführt werden.
+- Jekyll-Befehle bei Bedarf im laufenden Container mit `docker compose -f jekyll/docker-compose.yaml exec jekyll ...` ausführen.
 
 ## Inhalte und Gestaltung
 
