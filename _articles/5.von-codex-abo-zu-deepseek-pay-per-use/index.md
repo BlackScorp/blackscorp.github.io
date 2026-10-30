@@ -1,4 +1,5 @@
 ---
+comments_key: 5-von-codex-abo-zu-deepseek-pay-per-use
 title: "Von Codex-Abo zu DeepSeek Pay-per-Use: mein Fazit nach dem ersten Tag"
 published: true
 date: 2026-10-30
