@@ -1,4 +1,5 @@
 ---
+comments_key: 6-goose-statt-crush-weniger-tokens-fuer-die-gleiche-arbeit
 title: "Goose statt Crush: weniger Tokens für die gleiche Arbeit"
 published: true
 date: 2026-10-31
