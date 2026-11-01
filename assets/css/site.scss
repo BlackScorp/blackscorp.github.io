@@ -201,7 +201,8 @@ h1, h2, h3, p { margin-top: 0; }
 .post-hero-image { display: block; width: 100%; height: auto; border-radius: 6px; }
 .post-image-figure figcaption, .article-image-figure figcaption { margin-top: 7px; color: $muted; font-size: 12px; line-height: 1.5; }
 .article-image { display: block; max-width: 100%; height: auto; border-radius: 6px; }
-.prose .article-image-figure { margin: 1.4rem 0; }
+.prose .article-image-figure { margin: 1.4rem 0; text-align: center; }
+.prose .article-image-figure img { margin-left: auto; margin-right: auto; }
 .post-comments { margin-top: 42px; padding-top: 28px; border-top: 1px solid $line; }
 .comments-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
 .comments-heading h2 { display: flex; align-items: center; gap: 12px; margin: 0; font-size: 24px; letter-spacing: -.03em; }
