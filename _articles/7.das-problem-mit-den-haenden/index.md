@@ -1,4 +1,5 @@
 ---
+comments_key: 7-das-problem-mit-den-haenden
 title: "Das Problem mit den Händen"
 published: true
 date: 2026-11-02
