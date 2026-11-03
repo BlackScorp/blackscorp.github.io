@@ -9,9 +9,9 @@ const preview = process.env.BLOG_PREVIEW_URL;
 test('discovery files are generated from Jekyll content', () => {
   const config = readFileSync(path.join(root, '_config.yml'), 'utf8');
   assert.match(config, /^  - jekyll-sitemap$/m);
-  const template = readFileSync(path.join(root, '_pages/llm.txt'), 'utf8');
+  const template = readFileSync(path.join(root, '_pages/llms.txt'), 'utf8');
   assert.match(template, /^layout: null$/m);
-  assert.match(template, /^permalink: \/llm.txt$/m);
+  assert.match(template, /^permalink: \/llms.txt$/m);
   assert.match(template, /^sitemap: false$/m);
   assert.match(template, /site.pages/);
   assert.match(template, /include articles\.html/);
@@ -33,7 +33,7 @@ test('preview serves the sitemap, robots and generated LLM index', { skip: !prev
   assert.equal(new Set(locations).size, locations.length);
   for (const location of locations) assert.equal(new URL(location).origin, 'https://blackscorp.github.io');
   assert.ok(locations.some((location) => new URL(location).pathname === '/'));
-  assert.ok(!locations.some((location) => new URL(location).pathname === '/llm.txt'));
+  assert.ok(!locations.some((location) => new URL(location).pathname === '/llms.txt'));
   assert.ok(!locations.some((location) => new URL(location).pathname === '/cv/'));
   const cv = await fetch(new URL('/cv/', preview));
   assert.equal(cv.status, 404);
@@ -41,7 +41,7 @@ test('preview serves the sitemap, robots and generated LLM index', { skip: !prev
   const robots = await get('/robots.txt');
   assert.match(robots, /Sitemap: https:\/\/blackscorp.github.io\/sitemap.xml/);
 
-  const index = await get('/llm.txt');
+  const index = await get('/llms.txt');
   assert.match(index, /^# Vitalij Mik/m);
   assert.match(index, /^## Seiten$/m);
   assert.match(index, /^## Blogbeiträge$/m);
