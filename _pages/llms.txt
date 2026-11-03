@@ -1,6 +1,6 @@
 ---
 layout: null
-permalink: /llm.txt
+permalink: /llms.txt
 sitemap: false
 ---
 # {{ site.title }}
